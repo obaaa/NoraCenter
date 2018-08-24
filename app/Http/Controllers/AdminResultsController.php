@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 	use Session;
-	use Request;
+	use Illuminate\Http\Request;
 	use DB;
 	use CRUDBooster;
 
@@ -339,6 +339,26 @@
 			$data['page_title'] = "Result Details";
 			// الرجوع إلى العرض وإرسال البيانات لعرضها
 			return view('result.details',$data);
+		}
+
+		// لحفظ وتحديث درجات النتائج
+		public function saveDetails(Request $request) {
+			// if (!$request->degree) {
+			// return back();
+			// }
+			foreach ($request->degree as $trainees_id => $degree) {
+				DB::table('certificates_details')
+				->where('certificates_id', $request->certificates_id)
+				->where('trainees_id', $trainees_id)
+				->update([
+					'degree' => $degree,
+					'details' => $request->details[$trainees_id],
+					'updated_at' => now(),
+				]);
+			}
+			CRUDBooster::redirect(CRUDBooster::adminPath('results/details/'.$request->certificates_id),'success','success');
+
+			// return back();
 		}
 
 	}
