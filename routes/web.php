@@ -36,6 +36,11 @@ Route::get('admin/attendances/lectures/{id}','AdminAttendancesController@getLect
 Route::post('admin/attendances/add_attendance','AdminAttendancesController@add_attendance');
 Route::get('admin/attendances/lecturesReport/{id}','AdminAttendancesController@lecturesReport');
 
+// Results
+Route::get('admin/results/details/{id}','AdminResultsController@getDetails');
+Route::post('admin/results/details','AdminResultsController@saveDetails');
+Route::post('admin/results/finished','AdminResultsController@finished');
+Route::post('admin/results/finished','AdminResultController@finished');
 // test
 Route::get('/', function () {
     return view('welcome');
