@@ -334,6 +334,7 @@
 
 			$data['result'] = DB::table('certificates_details')->where('certificates_id',$id)->get();
 			$data['certificates_id'] = $id;
+			$data['page_title'] = "Result Details";
 
 			return view('degrees_details',$data);
 		}
