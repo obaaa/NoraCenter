@@ -343,9 +343,7 @@
 
 		// لحفظ وتحديث درجات النتائج
 		public function saveDetails(Request $request) {
-			// if (!$request->degree) {
-			// return back();
-			// }
+
 			foreach ($request->degree as $trainees_id => $degree) {
 				DB::table('certificates_details')
 				->where('certificates_id', $request->certificates_id)
@@ -357,8 +355,27 @@
 				]);
 			}
 			CRUDBooster::redirect(CRUDBooster::adminPath('results/details/'.$request->certificates_id),'success','success');
-
-			// return back();
+			
 		}
+		
+		// 
+		public function status(Request $request) {
 
+			if ($request->status == 'finished') {
+
+				DB::table('certificates')->where('id',$request->certificates_id)
+				->update(['status' => $request->status]);
+
+				CRUDBooster::redirect(CRUDBooster::adminPath('certificates'),'success','success');
+
+			}elseif ($request->status == 'open') {
+
+				DB::table('certificates')->where('id',$request->certificates_id)
+				->update(['status' => $request->status]);
+
+				CRUDBooster::redirect(CRUDBooster::adminPath('results'),'success','success');
+
+			}
+			
+		}
 	}

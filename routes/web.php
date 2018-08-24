@@ -40,7 +40,7 @@ Route::get('admin/attendances/lecturesReport/{id}','AdminAttendancesController@l
 Route::get('admin/results/details/{id}','AdminResultsController@getDetails');
 Route::post('admin/results/details','AdminResultsController@saveDetails');
 Route::post('admin/results/finished','AdminResultsController@finished');
-Route::post('admin/results/finished','AdminResultController@finished');
+Route::post('admin/results/status','AdminResultsController@finished');
 
 // المسار الجزر
 Route::get('/', function () {
