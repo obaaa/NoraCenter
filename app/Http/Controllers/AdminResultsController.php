@@ -336,7 +336,7 @@
 			$data['certificates_id'] = $id;
 			$data['page_title'] = "Result Details";
 
-			return view('degrees_details',$data);
+			return view('result.details',$data);
 		}
 
 	}
