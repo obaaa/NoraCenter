@@ -329,13 +329,15 @@
 
 
 
-	    //By the way, you can still create your own method in here... :)
+		//By the way, you can still create your own method in here... :)
+		
+		// الداله المخصصة لعرض بيانات النتيجه
 		public function getDetails($id) {
 
 			$data['result'] = DB::table('certificates_details')->where('certificates_id',$id)->get();
 			$data['certificates_id'] = $id;
 			$data['page_title'] = "Result Details";
-
+			// الرجوع إلى العرض وإرسال البيانات لعرضها
 			return view('result.details',$data);
 		}
 
