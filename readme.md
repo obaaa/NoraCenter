@@ -1,20 +1,18 @@
 <div dir=rtl markdown=1> 
 <p align="center"><img src="https://raw.githubusercontent.com/obaaa8/NoraCenter/master/public/vendor/crudbooster/1.png"></p>
 
-<div dir=rtl markdown=1> 
+## تعريف
+نظام مخصص ﻹدارة مراكز التدريب مصمم بتقنيات الويب ويتم التعامل معه عن طريق المتصفحات المختلفة أو من خلال تطبيق الهاتف، ويضم مجموعة من الأقسام الداخلية بصلاحيات مختلفة.
+
 <p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/vendor/crudbooster/postNoraCenter.png"></p>
 
-<div dir=rtl markdown=1> 
-<p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/vendor/crudbooster/login.jpg"></p>
 
-
-## عن نظام نورا ﻹداره مراكز التدريب
+## تفاصيل
 
 نظام نورا هو نظام مقدم من [أوبااا](http://obaaa.sd) للتصميم والبرمجة مخصص لادارة العملية التعليمة. يقدم مساحة موحده للمتدرب والمدرب واﻹداره، يتيح للمتدرب التسجيل من خلاله  بالمركز او المعهد واﻹلتحاق بالكورسات ومتابعة الحضور والدفعيات وطلب الشهاده وغيرها من الخصائص، كما يتم ربطه بموقع ويب خاص وتطبيق للجوال...
 
-________________
-## تعريف
-نظام مخصص ﻹدارة مراكز التدريب مصمم بتقنيات الويب ويتم التعامل معه عن طريق المتصفحات المختلفة أو من خلال تطبيق الهاتف، ويضم مجموعة من الأقسام الداخلية بصلاحيات مختلفة.
+
+<p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/vendor/crudbooster/login.jpg"></p>
 
 
 ## أجزاء النظام
