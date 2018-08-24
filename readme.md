@@ -10,11 +10,6 @@
 
 ...
 
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within NoraCenter, please send an e-mail to via [obaaa8@gmail.com](mailto:obaaa8@gmail.com).
