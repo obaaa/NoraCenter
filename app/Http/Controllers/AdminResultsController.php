@@ -330,6 +330,12 @@
 
 
 	    //By the way, you can still create your own method in here... :)
+		public function getDetails($id) {
 
+			$data['result'] = DB::table('certificates_details')->where('certificates_id',$id)->get();
+			$data['certificates_id'] = $id;
+
+			return view('degrees_details',$data);
+		}
 
 	}
