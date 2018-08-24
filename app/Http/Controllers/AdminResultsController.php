@@ -358,7 +358,7 @@
 			
 		}
 		
-		// 
+		// تغيير حالة النتيجة بين إنتهاء ومفتوخة
 		public function status(Request $request) {
 
 			if ($request->status == 'finished') {
