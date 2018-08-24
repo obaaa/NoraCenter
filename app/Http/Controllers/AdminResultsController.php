@@ -238,7 +238,10 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-
+			$query->where('certificates.status', 'open');
+			if (CRUDBooster::myPrivilegeName() == 'Trainer') {
+				$query->where('certificates.trainers_id', CRUDBooster::myId());
+			}
 	    }
 
 	    /*
