@@ -1,6 +1,12 @@
 <div dir=rtl markdown=1> 
 <p align="center"><img src="https://raw.githubusercontent.com/obaaa8/NoraCenter/master/public/vendor/crudbooster/1.png"></p>
 
+<div dir=rtl markdown=1> 
+<p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/vendor/crudbooster/postNoraCenter.png"></p>
+
+<div dir=rtl markdown=1> 
+<p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/vendor/crudbooster/login.jpg"></p>
+
 
 ## عن نظام نورا ﻹداره مراكز التدريب
 
