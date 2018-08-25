@@ -466,7 +466,8 @@
           $data['trainees'][$key]['id'] = $trainee->id;
           $data['trainees'][$key]['name'] = $trainee->name;
           $data['trainees'][$key]['phone_number'] = $trainee->phone_number;
-          $data['trainees'][$key]['groups_trainee'] = DB::table('groups_trainees')->where('groups_id',$groups_id)->where('trainees_id',$trainee->id)->select('register_fees', 'fees_remaining', 'certificate_fees', 'certificate_status','status', 'disscount_value')->first();
+          $data['trainees'][$key]['groups_trainee'] = DB::table('groups_trainees')->where('groups_id',$groups_id)->where('trainees_id',$trainee->id)->select('register_fees', 'fees_remaining', 'certificate_fees','status', 'disscount_value')->first();
+          $data['trainees'][$key]['certificate_status'] = DB::table('certificates_details')->where('certificates_id',DB::table('certificates')->where('groups_id',$groups_id)->value('id'))->where('trainees_id',$trainee->id)->value('certificate_status');
           $key++;
         }
         $data['trainees_not_in'] = DB::table('cms_users')->where('id_cms_privileges',7)->whereNotIn('id',NoraCenter::getTraineesgroupIds($groups_id))->select('id','name','phone_number')->get()->toArray();
