@@ -238,7 +238,7 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-			$query->where('certificates.status', 'open');
+			$query->where('certificates.status', 'finished');
 			if (CRUDBooster::myPrivilegeName() == 'Trainer') {
 				$query->where('certificates.trainers_id', CRUDBooster::myId());
 			}
@@ -342,21 +342,21 @@
 		}
 
 		// لحفظ وتحديث درجات النتائج
-		public function saveDetails(Request $request) {
+		// public function saveDetails(Request $request) {
 
-			foreach ($request->degree as $trainees_id => $degree) {
-				DB::table('certificates_details')
-				->where('certificates_id', $request->certificates_id)
-				->where('trainees_id', $trainees_id)
-				->update([
-					'degree' => $degree,
-					'details' => $request->details[$trainees_id],
-					'updated_at' => now(),
-				]);
-			}
-			CRUDBooster::redirect(CRUDBooster::adminPath('results/details/'.$request->certificates_id),'success','success');
+		// 	foreach ($request->degree as $trainees_id => $degree) {
+		// 		DB::table('certificates_details')
+		// 		->where('certificates_id', $request->certificates_id)
+		// 		->where('trainees_id', $trainees_id)
+		// 		->update([
+		// 			'degree' => $degree,
+		// 			'details' => $request->details[$trainees_id],
+		// 			'updated_at' => now(),
+		// 		]);
+		// 	}
+		// 	CRUDBooster::redirect(CRUDBooster::adminPath('results/details/'.$request->certificates_id),'success','success');
 			
-		}
+		// }
 		
 		// تغيير حالة النتيجة بين إنتهاء ومفتوخة
 		public function status(Request $request) {
