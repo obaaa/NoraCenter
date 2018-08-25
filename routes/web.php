@@ -48,8 +48,10 @@ Route::post('admin/results/status','AdminResultsController@status');
 Route::get('/admin/certificates/request/{groups_id}/{trainees_id}/', 'AdminCertificateWaitingsController@groupsTraineesRequest');
 Route::get('/admin/certificates/ready/{certificates_details_id}/', 'AdminCertificateWaitingsController@certificatesReady');
 Route::get('/admin/certificates/groups_trainees/print/{groups_id}/{trainees_id}/', 'AdminCertificateWaitingsController@certificatesPrint');
-Route::get('/admin/certificates/groups_trainees/print/{groups_id}/{trainees_id}/', 'AdminCertificateWaitingsController@certificatesPrint');
-Route::get('/admin/certificates/certificates_details/print/{certificates_details_id}/', 'AdminCertificateWaitingsController@certificatesDetailsPrint');
+Route::get('/admin/certificates/groups_trainees/print/{groups_id}/{trainees_id}/', 'AdminAllCertificatesController@certificatesPrint');
+Route::get('/admin/certificates/certificates_details/print/{certificates_details_id}/', 'AdminAllCertificatesController@certificatesDetailsPrint');
+
+Route::get('/verify/{verify}','Verify');
 
 // المسار الجزر
 Route::get('/', function () {
