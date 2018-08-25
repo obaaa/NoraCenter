@@ -339,12 +339,24 @@
 
 	  }
 
-	  public function groupsTraineesPrint($groups_id, $trainees_id){
-
+	  public function certificatesPrint($groups_id, $trainees_id){
+		$this->cbLoader();
+        $module = CRUDBooster::getCurrentModule();
+        $row = DB::table($this->table)->where($this->primary_key, $request->groups_id)->first();
+        if (! CRUDBooster::isUpdate()) {
+            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+        }
 	  }
 
 	  public function certificatesDetailsPrint($certificates_details_id) {
-
+		$this->cbLoader();
+        $module = CRUDBooster::getCurrentModule();
+        $row = DB::table($this->table)->where($this->primary_key, $request->groups_id)->first();
+        if (! CRUDBooster::isUpdate()) {
+            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+        }
 	  }
 
       public function print($groups_trainees_id) {
@@ -401,6 +413,9 @@
 
 	  public function groupsTraineesRequest($groups_id, $trainees_id)
 	  {
+        if (! CRUDBooster::isUpdate() && CRUDBooster::myId() != $trainees_id) {
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+        }
 		DB::table('certificates_details')->where('trainees_id',$trainees_id)->where('certificates_id',DB::table('certificates')->where('groups_id',$groups_id)->value('id'))->update(['certificate_status' => 'waiting']);
 
 		CRUDBooster::redirectBack('success');
