@@ -3,11 +3,11 @@
 	use Session;
 	use Request;
 	use DB;
-  use CB;
-  use Illuminate\Support\Facades\Route;
+  	use CB;
+  	use Illuminate\Support\Facades\Route;
 	use CRUDBooster;
-  use NoraCenter;
-  use Carbon\Carbon;
+  	use NoraCenter;
+  	use Carbon\Carbon;
 
 	class AdminTraineeController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -32,33 +32,33 @@
 			$this->table = "cms_users";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
-      $trainee_url = url(config('crudbooster.ADMIN_PATH')).'/trainee';
+      		$trainee_url = url(config('crudbooster.ADMIN_PATH')).'/trainee';
 
-      # START COLUMNS DO NOT REMOVE THIS LINE
-      $this->col = [];
-  		$this->col[] = ["label"=>"ID-NO","name"=>"id"];
-      $this->col[] = ["label" => "Name", "name" => "name", "callback_php" => '"<a href=\"'.$trainee_url.'/detail/$row->id\">$row->name</a>"'];
-  		// $this->col[] = ["label"=>"Name","name"=>"name"];
-  		$this->col[] = ["label"=>"Photo","name"=>"photo","image"=>true];
-  		$this->col[] = ["label"=>"Email","name"=>"email"];
-  		$this->col[] = ["label"=>"Phone Number","name"=>"phone_number"];
-  		$this->col[] = ["label"=>"Educational Level","name"=>"educational_level"];
-  		$this->col[] = ["label"=>"Address","name"=>"address"];
-  		# END COLUMNS DO NOT REMOVE THIS LINE
+      		# START COLUMNS DO NOT REMOVE THIS LINE
+			$this->col = [];
+			$this->col[] = ["label"=>"ID-NO","name"=>"id"];
+			$this->col[] = ["label" => "Name", "name" => "name", "callback_php" => '"<a href=\"'.$trainee_url.'/detail/$row->id\">$row->name</a>"'];
+			// $this->col[] = ["label"=>"Name","name"=>"name"];
+			$this->col[] = ["label"=>"Photo","name"=>"photo","image"=>true];
+			$this->col[] = ["label"=>"Email","name"=>"email"];
+			$this->col[] = ["label"=>"Phone Number","name"=>"phone_number"];
+			$this->col[] = ["label"=>"Educational Level","name"=>"educational_level"];
+			$this->col[] = ["label"=>"Address","name"=>"address"];
+			# END COLUMNS DO NOT REMOVE THIS LINE
 
 
-  		# START FORM DO NOT REMOVE THIS LINE
-  		$this->form = [];
-  		$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-      $this->form[] = ['label'=>'Photo','name'=>'photo','type'=>'upload','validation'=>'image|max:6000','width'=>'col-sm-10','help'=>'File types support : JPG, JPEG, PNG, GIF, BMP'];
-  		$this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|email|unique:cms_users','width'=>'col-sm-10','placeholder'=>'Please enter a valid email address'];
-  		$this->form[] = ['label'=>'Phone Number','name'=>'phone_number','type'=>'number','validation'=>'required|unique:cms_users|numeric|min:10','width'=>'col-sm-8','help'=>'09×××××××× / 01×××××××× | رقم الهاتف'];
-  		$this->form[] = ['label'=>'Gender','name'=>'gender','type'=>'select','validation'=>'required','width'=>'col-sm-9','dataenum'=>'ذكر;أنثى'];
-  		$this->form[] = ['label'=>'Specialization','name'=>'specialization','type'=>'text','validation'=>'required','width'=>'col-sm-9','help'=>'التخصص'];
-  		$this->form[] = ['label'=>'Educational Level','name'=>'educational_level','type'=>'select','validation'=>'required','width'=>'col-sm-9','dataenum'=>'أمي;أساسي;ثانوي;جامعي;فوق الجامعي','help'=>'المستوى التعليمي'];
-  		$this->form[] = ['label'=>'Address','name'=>'address','type'=>'text','validation'=>'required|string','width'=>'col-sm-9','help'=>'العنوان'];
-  		$this->form[] = ['label'=>'Password','name'=>'password','type'=>'password','validation'=>'min:3|max:32','width'=>'col-sm-9'];
-  		# END FORM DO NOT REMOVE THIS LINE
+			# START FORM DO NOT REMOVE THIS LINE
+			$this->form = [];
+			$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
+			$this->form[] = ['label'=>'Photo','name'=>'photo','type'=>'upload','validation'=>'image|max:6000','width'=>'col-sm-10','help'=>'File types support : JPG, JPEG, PNG, GIF, BMP'];
+			$this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|email|unique:cms_users','width'=>'col-sm-10','placeholder'=>'Please enter a valid email address'];
+			$this->form[] = ['label'=>'Phone Number','name'=>'phone_number','type'=>'number','validation'=>'required|unique:cms_users|numeric|min:10','width'=>'col-sm-8','help'=>'09×××××××× / 01×××××××× | رقم الهاتف'];
+			$this->form[] = ['label'=>'Gender','name'=>'gender','type'=>'select','validation'=>'required','width'=>'col-sm-9','dataenum'=>'ذكر;أنثى'];
+			$this->form[] = ['label'=>'Specialization','name'=>'specialization','type'=>'text','validation'=>'required','width'=>'col-sm-9','help'=>'التخصص'];
+			$this->form[] = ['label'=>'Educational Level','name'=>'educational_level','type'=>'select','validation'=>'required','width'=>'col-sm-9','dataenum'=>'أمي;أساسي;ثانوي;جامعي;فوق الجامعي','help'=>'المستوى التعليمي'];
+			$this->form[] = ['label'=>'Address','name'=>'address','type'=>'text','validation'=>'required|string','width'=>'col-sm-9','help'=>'العنوان'];
+			$this->form[] = ['label'=>'Password','name'=>'password','type'=>'password','validation'=>'min:3|max:32','width'=>'col-sm-9'];
+			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			// $this->form = [];
@@ -262,8 +262,6 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
-	        //Your code here
-
           $query->where('cms_users.id_cms_privileges',7);
 	    }
 
@@ -285,7 +283,6 @@
 	    |
 	    */
 	    public function hook_before_add(&$postdata) {
-	        //Your code here
           $postdata['id_cms_privileges'] = 7;
 	    }
 
@@ -350,128 +347,83 @@
 
 	    }
 
+		public function getDetail($id) {
+			$this->cbLoader();
+			$module = CRUDBooster::getCurrentModule();
+			$row = DB::table($this->table)->where($this->primary_key, $id)->first();
+			if (NoraCenter::isTrainee() && CRUDBooster::myId() != $id) {
+				CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
+				CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+			}
+
+			// $this->cbLoader();
+			$row = DB::table($this->table)->where($this->primary_key, $id)->first();
+
+			if (! CRUDBooster::isRead() && $this->global_privilege == false || $this->button_detail == false) {
+			CRUDBooster::insertLog(trans("crudbooster.log_try_view", [
+				'name' => $row->{$this->title_field},
+				'module' => CRUDBooster::getCurrentModule()->name,
+			]));
+			CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+			}
+
+			$module = CRUDBooster::getCurrentModule();
+
+			$page_menu = Route::getCurrentRoute()->getActionName();
+			$page_title = trans("crudbooster.detail_data_page_title", ['module' => $module->name, 'name' => $row->{$this->title_field}]);
+			$command = 'detail';
+
+			Session::put('current_row_id', $id);
+			$join_date = DB::table('cms_users')->where('id',$id)->value('created_at');
+			$join_date = Carbon::parse($join_date)->format('jS \\of F Y');
+
+			$groups_trainee = DB::table('groups_trainees')->where('trainees_id',$id)->where('register_fees',NULL)->get();
+				foreach ($groups_trainee as $key => $value) {
+				$groups_id[]=$value->groups_id;
+				}
+				if ($groups_id) {
+				$register_fees = DB::table('groups')->whereIn('id',$groups_id)->sum('register_fees');
+				}else {
+				$register_fees = 0;
+				}
+
+			$disscount_values = DB::table('groups_trainees')
+									->where('trainees_id',$id)
+									->where('fees_remaining','>',0)
+									->sum('disscount_value');
+
+			$fees_remaining = DB::table('groups_trainees')
+								->where('trainees_id',$id)
+								->sum('fees_remaining');
+
+			$fees_remaining = $fees_remaining - $disscount_values;
+
+			$results = DB::table('groups_trainees')->where('trainees_id',$id)->get();
+			$groups_trainee = [];
+			foreach ($results as $key => $result) {
+				$groups_trainee[$key]['group_name']           = DB::table('groups')->where('id',$result->groups_id)->value('name');
+				$groups_trainee[$key]['groups_id']            = $result->groups_id;
+				$groups_trainee[$key]['course_name']          = DB::table('courses')->where('id',DB::table('groups')->where('id',$result->groups_id)->value('courses_id'))->value('name');
+				$groups_trainee[$key]['fees_paid']            = $result->fees - $result->fees_remaining;
+				$groups_trainee[$key]['total_fees_remaining'] = $result->fees_remaining - $result->disscount_value;
+				$attendances = DB::table('attendances')->where('groups_id',$result->groups_id)->first();
+				$attended = DB::table('attendance_trainees')->where('attendances_id',DB::table('attendances')->where('groups_id',$result->groups_id)->value('id'))->where('trainees_id',$result->trainees_id)->where('status','attended')->count();
+				$groups_trainee[$key]['attendances']          = $attended.' -of- '.$attendances->lectures_number;
+				$groups_trainee[$key]['result']               = 'null';
+				$groups_trainee[$key]['certificate_status']   = DB::table('certificates_details')->where('certificates_id',DB::table('certificates')->where('groups_id',$result->groups_id)->value('id'))->where('trainees_id',$result->trainees_id)->value('certificate_status');
+			}
 
 
-	    //By the way, you can still create your own method in here... :)
-      public function getDetail($id) {
-      //   //Create an Auth
-      //   if(!CRUDBooster::isRead() && $this->global_privilege==FALSE || $this->button_edit==FALSE) {
-      //     CRUDBooster::redirect(CRUDBooster::adminPath(),trans("crudbooster.denied_access"));
-      //   }
-      //   $this->col = [];
-  		// 	$this->col[] = ["label"=>"Name","name"=>"name"];
-  		// 	$this->col[] = ["label"=>"Photo","name"=>"photo","image"=>true];
-  		// 	$this->col[] = ["label"=>"Email","name"=>"email"];
-  		// 	$this->col[] = ["label"=>"Phone Number","name"=>"phone_number"];
-      //
-      //   $this->form = [];
-      //   $this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:5|max:90','width'=>'col-sm-8','placeholder'=>'You can only enter the letter only'];
-      //   $this->form[] = ['label'=>'Photo','name'=>'photo','type'=>'upload','validation'=>'required|image|max:5000','width'=>'col-sm-8','help'=>'File types support : JPG, JPEG, PNG, GIF, BMP - Max size 5 MB'];
-      //   $this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:cms_users','width'=>'col-sm-8','help'=>'Example: 0123456789@mail.com','placeholder'=>'Please enter a valid email address'];
-      //   $this->form[] = ['label'=>'Password','name'=>'password','type'=>'password','validation'=>'min:3|max:32','width'=>'col-sm-8','help'=>'Minimum 5 characters. Please leave empty if you did not change the password.','placeholder'=>'Please enter a strong Password'];
-      //   $this->form[] = ['label'=>'Phone Number','name'=>'phone_number','type'=>'number','validation'=>'required|numeric|unique:cms_users','width'=>'col-sm-8','help'=>'Example: 0123456789 or 0912345678','placeholder'=>'Please enter a valid Phone Number'];
-      //   $this->form[] = ['label'=>'Gender','name'=>'gender','type'=>'select','validation'=>'required|min:1|max:255','width'=>'col-sm-8','dataenum'=>'Male;Female'];
-      //   $this->form[] = ['label'=>'Address','name'=>'address','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8','placeholder'=>'Enter your current residence'];
-      //   $this->form[] = ['label'=>'Details','name'=>'details','type'=>'textarea','validation'=>'string|min:5|max:5000','width'=>'col-sm-8','placeholder'=>'Enter some details'];
-      //   $this->form[] = ['label'=>'Status','name'=>'status','type'=>'select','width'=>'col-sm-8','dataenum'=>'Active;Inactive','default'=>'Active'];
-      //
-      //   // dd($this->form);
-      //   $data = [];
-      //   $data['page_title'] = 'Profile';
-      //   // $data['row'] = DB::table('products')->where('id',$id)->first();
-      //
-      //   //Please use cbView method instead view method from laravel
-      //   return view('crudbooster::menus_management', compact(''));
-      //
-      //   $this->cbView('profile',$data);
-      // }
-      $this->cbLoader();
-      $module = CRUDBooster::getCurrentModule();
-      $row = DB::table($this->table)->where($this->primary_key, $id)->first();
-      if (NoraCenter::isTrainee() && CRUDBooster::myId() != $id) {
-          CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
-          CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
-      }
-
-      // $this->cbLoader();
-      $row = DB::table($this->table)->where($this->primary_key, $id)->first();
-
-      if (! CRUDBooster::isRead() && $this->global_privilege == false || $this->button_detail == false) {
-          CRUDBooster::insertLog(trans("crudbooster.log_try_view", [
-              'name' => $row->{$this->title_field},
-              'module' => CRUDBooster::getCurrentModule()->name,
-          ]));
-          CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
-      }
-
-      $module = CRUDBooster::getCurrentModule();
-
-      $page_menu = Route::getCurrentRoute()->getActionName();
-      $page_title = trans("crudbooster.detail_data_page_title", ['module' => $module->name, 'name' => $row->{$this->title_field}]);
-      $command = 'detail';
-
-      Session::put('current_row_id', $id);
-      $join_date = DB::table('cms_users')->where('id',$id)->value('created_at');
-      $join_date = Carbon::parse($join_date)->format('jS \\of F Y');
-
-      $groups_trainee = DB::table('groups_trainees')->where('trainees_id',$id)->where('register_fees',NULL)->get();
-        foreach ($groups_trainee as $key => $value) {
-          $groups_id[]=$value->groups_id;
-        }
-        if ($groups_id) {
-          $register_fees = DB::table('groups')->whereIn('id',$groups_id)->sum('register_fees');
-        }else {
-          $register_fees = 0;
-        }
-
-      // $certificates_id = DB::table('groups_trainees')->where('trainees_id',$id)->where('certificate_fees',NULL)->get();
-      // foreach ($certificates_id as $key => $value) {
-      //   $groups_id[]=$value->groups_id;
-      // }
-      // if ($groups_id) {
-      // $certificates_fees = DB::table('groups')->whereIn('id',$groups_id)->sum('certificate_fees');
-      // }else {
-      //   $certificates_fees = 0;
-      // }
-
-      $disscount_values = DB::table('groups_trainees')
-                            ->where('trainees_id',$id)
-                            ->where('fees_remaining','>',0)
-                            ->sum('disscount_value');
-
-      $fees_remaining = DB::table('groups_trainees')
-                          ->where('trainees_id',$id)
-                          ->sum('fees_remaining');
-
-      $fees_remaining = $fees_remaining - $disscount_values;
-
-      $results = DB::table('groups_trainees')->where('trainees_id',$id)->get();
-      $groups_trainee = [];
-      foreach ($results as $key => $result) {
-        $groups_trainee[$key]['group_name']           = DB::table('groups')->where('id',$result->groups_id)->value('name');
-        $groups_trainee[$key]['groups_id']            = $result->groups_id;
-        $groups_trainee[$key]['course_name']          = DB::table('courses')->where('id',DB::table('groups')->where('id',$result->groups_id)->value('courses_id'))->value('name');
-        $groups_trainee[$key]['fees_paid']            = $result->fees - $result->fees_remaining;
-        $groups_trainee[$key]['total_fees_remaining'] = $result->fees_remaining - $result->disscount_value;
-        $attendances = DB::table('attendances')->where('groups_id',$result->groups_id)->first();
-        $attended = DB::table('attendance_trainees')->where('attendances_id',DB::table('attendances')->where('groups_id',$result->groups_id)->value('id'))->where('trainees_id',$result->trainees_id)->where('status','attended')->count();
-        $groups_trainee[$key]['attendances']          = $attended.' -of- '.$attendances->lectures_number;
-        $groups_trainee[$key]['result']               = 'null';
-        $groups_trainee[$key]['certificate_status']   = DB::table('certificates_details')->where('certificates_id',DB::table('certificates')->where('groups_id',$result->groups_id)->value('id'))->where('trainees_id',$result->trainees_id)->value('certificate_status');
-      }
-
-
-      // dd($groups_trainee);
-      return view('crudbooster::profile', compact('row',
-                    'page_menu',
-                    'page_title',
-                    'command',
-                    'id',
-                    'join_date',
-                    'register_fees',
-                    'result',
-                    'groups_trainee',
-                    'fees_remaining'
-                  ));
-      }
+			return view('trainee.profile', compact('row',
+							'page_menu',
+							'page_title',
+							'command',
+							'id',
+							'join_date',
+							'register_fees',
+							'result',
+							'groups_trainee',
+							'fees_remaining'
+						));
+		}
 	}
