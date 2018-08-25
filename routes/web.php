@@ -36,11 +36,13 @@ Route::get('admin/attendances/lectures/{id}','AdminAttendancesController@getLect
 Route::post('admin/attendances/add_attendance','AdminAttendancesController@add_attendance');
 Route::get('admin/attendances/lecturesReport/{id}','AdminAttendancesController@lecturesReport');
 
-// مسارات نتائج المجموعات
+// مسارات درجات المتدربين في المجموعات
+Route::get('admin/degrees/details/{id}','AdminDegreesController@getDetails');
+Route::post('admin/degrees/details','AdminDegreesController@saveDetails');
+
+// مسارات نتائج المتدربين في المجموعات
 Route::get('admin/results/details/{id}','AdminResultsController@getDetails');
-Route::post('admin/results/details','AdminResultsController@saveDetails');
-Route::post('admin/results/finished','AdminResultsController@finished');
-Route::post('admin/results/status','AdminResultsController@finished');
+Route::post('admin/results/status','AdminResultsController@status');
 
 // المسار الجزر
 Route::get('/', function () {
