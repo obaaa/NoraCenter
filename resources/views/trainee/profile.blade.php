@@ -131,23 +131,29 @@
                   <th>الشهادة</th>
                 </thead>
                   <tbody>
-                  @foreach($groups_trainee as $row)
+                  @foreach($groups_trainee as $value)
                     <tr>
                       <td>
                         @if (CRUDBooster::myPrivilegeId() == 7)
-                          {{ $row['group_name'] }}
+                          {{ $value['group_name'] }}
                         @else
-                          <a href="{{ URL('admin/new_groups/trainees/'.$row['groups_id']) }}">
-                            {{ $row['group_name'] }}
+                          <a href="{{ URL('admin/new_groups/trainees/'.$value['groups_id']) }}">
+                            {{ $value['group_name'] }}
                           </a>
                         @endif
                       </td>
-                      <td>{{ $row['course_name'] }}</td>
-                      <td><code>{{ $row['fees_paid'] }}</code></td>
-                      <td><code>{{ $row['total_fees_remaining'] }}</code></td>
-                      <td><code>{{ $row['attendances'] }}</code></td>
-                      <td><code>{{ $row['result'] }}</code></td>
-                      <td><code>{{ $row['certificate_status'] }}</code></td>
+                      <td>{{ $value['course_name'] }}</td>
+                      <td><code>{{ $value['fees_paid'] }}</code></td>
+                      <td><code>{{ $value['total_fees_remaining'] }}</code></td>
+                      <td><code>{{ $value['attendances'] }}</code></td>
+                      <td><code>{{ $value['result'] }}</code></td>
+                      <td>
+                        @if ($value['certificate_status'] == 'ready' && CRUDBooster::myPrivilegeId() != 7)
+                          &nbsp<a href='{{ CRUDBooster::adminPath("certificates/groups_trainees/print/".$value['groups_id']."/".$row->id) }}' target="_blank" title="Print Receipt" class="btn btn-info btn-flat">Print&nbsp<i class='fa fa-print'></i></a>
+                        @else
+                        <code>{{ $value['certificate_status'] }}</code>
+                        @endif
+                      </td>
                   @endforeach
                 </tbody>
                 </table>
