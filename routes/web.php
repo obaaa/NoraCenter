@@ -44,8 +44,11 @@ Route::post('admin/degrees/details','AdminDegreesController@saveDetails');
 Route::get('admin/results/details/{id}','AdminResultsController@getDetails');
 Route::post('admin/results/status','AdminResultsController@status');
 
-// مسار طلب الشهادة
-Route::get('/admin/certificates/request/{groups_id}/{trainees_id}/', 'AdminCertificatesController@request');
+// مسارات الشهادة
+Route::get('/admin/certificates/request/{groups_id}/{trainees_id}/', 'AdminCertificateWaitingsController@groupsTraineesRequest');
+Route::get('/admin/certificates/ready/{certificates_details_id}/', 'AdminCertificateWaitingsController@certificatesReady');
+Route::get('/admin/certificates/groups_trainees/print/{groups_id}/{trainees_id}/', 'AdminCertificateWaitingsController@groupsTraineesPrint');
+Route::get('/admin/certificates/certificates_details/print/{certificates_details_id}/', 'AdminCertificateWaitingsController@certificatesDetailsPrint');
 
 // المسار الجزر
 Route::get('/', function () {
