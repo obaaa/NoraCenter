@@ -51,6 +51,7 @@ Route::get('/admin/certificates/groups_trainees/print/{groups_id}/{trainees_id}/
 Route::get('/admin/certificates/groups_trainees/print/{groups_id}/{trainees_id}/', 'AdminAllCertificatesController@certificatesPrint');
 Route::get('/admin/certificates/certificates_details/print/{certificates_details_id}/', 'AdminAllCertificatesController@certificatesDetailsPrint');
 
+// التحقق من صحة الشهادة
 Route::get('/verify/{verify}','Verify');
 
 // المسار الجزر
