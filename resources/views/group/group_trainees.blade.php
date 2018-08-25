@@ -250,9 +250,32 @@ $valuenow = intval(($finished_lectures * 100) / $lectures_number);
               });" title="pay" class="btn btn-warning btn-flat">Pay</a>
               <code>{{ $group->certificate_fees }}</code>
             @else
-              <code>{{ $value['groups_trainee']->certificate_status }}</code>
+
+              @if (DB::table('certificates')->where('groups_id',$group->id)->value('status') == 'finished' &&  $value['certificate_status'] == 'none')
+
+                <a href="javascript:void(0)" onclick="swal({
+                  title: '{{ trans('crudbooster.delete_title_confirm') }}',
+                  text: 'Request for certification ?',
+                  type:'info',
+                  showCancelButton:true,
+                  allowOutsideClick:true,
+                  confirmButtonColor: '#DD6B55',
+                  showLoaderOnConfirm: true,
+                  confirmButtonText: 'Yes',
+                  cancelButtonText: '{{ trans('crudbooster.button_cancel') }}',
+                  closeOnConfirm: false
+                  }, function(){
+                      location.href = '{{ CRUDBooster::adminPath("certificates/request/".$group->id."/".$value['id']) }}';
+
+                  });" title="Delete" class="btn btn-success btn-flat">Request</a>
+
+              @else
+                <code>{{ $value['certificate_status'] }}</code>
+              @endif
+
               &nbsp<a href='{{ CRUDBooster::adminPath("receipt/certificate_fees/".$group->id."/".$value['id']) }}' target="_blank" title="Print Receipt"><i class='fa fa-print'></i></a>
-            @endif
+            
+              @endif
           </td>
           <td>
             <a href="javascript:void(0)" onclick="swal({
