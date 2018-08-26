@@ -14,6 +14,8 @@
 
 <p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/vendor/crudbooster/login.jpg"></p>
 
+<p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/img/certificate.png"></p>
+
 
 ## أجزاء النظام
 1. المعلومات اﻷساسية:
