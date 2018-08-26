@@ -366,14 +366,14 @@
 				DB::table('certificates')->where('id',$request->certificates_id)
 				->update(['status' => $request->status]);
 
-				CRUDBooster::redirect(CRUDBooster::adminPath('certificates'),'success','success');
+				CRUDBooster::redirect(CRUDBooster::adminPath('results'),'success','success');
 
 			}elseif ($request->status == 'open') {
 
 				DB::table('certificates')->where('id',$request->certificates_id)
 				->update(['status' => $request->status]);
 
-				CRUDBooster::redirect(CRUDBooster::adminPath('results'),'success','success');
+				CRUDBooster::redirect(CRUDBooster::adminPath('degrees'),'success','success');
 
 			}
 			
