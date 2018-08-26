@@ -39,6 +39,7 @@
 			}];
 			$this->col[] = ["label"=>"Trainee","name"=>"trainees_id","join"=>"cms_users,name"];
 			$this->col[] = ["label"=>"Phone","name"=>"trainees_id","join"=>"cms_users,phone_number"];
+			$this->col[] = ["label"=>"updated_at","name"=>"updated_at"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -243,7 +244,8 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        // 'none','requested','waiting','ready','received'
-          $query->where('certificates_details.certificate_status','ready');
+		  $query->where('certificates_details.certificate_status','ready')->orderBy('updated_at', 'desc');
+		//   $query->orderBy('updated_at', 'desc');
 	    }
 
 	    /*
@@ -402,60 +404,52 @@
         if (! CRUDBooster::isUpdate()) {
             CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
             CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
-        }
-	  }
+		}
+		
+		$certificates_details = DB::table('certificates_details')
+						  ->where('id',$certificates_details_id)
+						  ->first();
 
-      public function print($groups_trainees_id) {
-        //Your code here
-        // $trainee_photo
-        // $trainee_id
-        // $trainee_name
-        // $course_name
-        // $group_start
-        // $group_end
-        // $grade certificates
-        $groups_trainee = DB::table('groups_trainees')
-                          ->where('id',$groups_trainees_id)
-                          ->first();
+		$trainee = DB::table('cms_users')
+                 ->where('id',$certificates_details->trainees_id)
+				 ->first();
 
-        $trainee        = DB::table('cms_users')
-                          ->where('id',$groups_trainee->trainees_id)
-                          ->first();
-
-        $group          = DB::table('groups')
-                          ->where('id',$groups_trainee->groups_id)
-                          ->first(); #classroom_lectures_id
-
-        $course         = DB::table('courses')
+		$certificate = DB::table('certificates')
+                          ->where('id',$certificates_details->certificates_id)
+						  ->first();
+		
+		$group = DB::table('groups')
+			->where('id',$certificate->groups_id)
+			->first(); #classroom_lectures_id
+						  
+		$course = DB::table('courses')
                           ->where('id',$group->courses_id)
-                          ->first();
-
-        $group_start    = DB::table('classroom_lectures_reserveds')
+						  ->first();
+		
+		$group_start    = DB::table('classroom_lectures_reserveds')
                           ->where('groups_id',$group->id)
                           ->min('date');
 
         $group_end      = DB::table('classroom_lectures_reserveds')
                           ->where('groups_id',$group->id)
-                          ->max('date');
-
-        $certificate_id = DB::table('certificates')
-                          ->where('groups_id',$group->id)
-                          ->value('id');
-
-        $certificates_details = DB::table('certificates_details')
-                          ->where('certificates_id',$certificate_id)
-                          ->first();
-        //degree
-        $data['trainee_photo'] = $trainee->photo;
+						  ->max('date');
+						  
+		$data['trainee_photo'] = $trainee->photo;
         $data['trainee_id']    = $trainee->id;
-        $data['trainee_name']  = $trainee->name;
-        $data['course_name']   = $course->name;
-        $data['group_start']   = $group_start;
-        $data['group_end']     = $group_end;
-        $data['degree']         = $certificates_details->degree;
-        // dd($date);
-        return view('certificate',$data);
-      }
+		$data['trainee_name']  = $trainee->name_english;
 
+		$data['groups_id']  = $group->id;
+		
+		$data['course_name']   = $course->name;
+
+		$data['verify']   = $certificates_details->verify;
+		
+        $data['group_start']   = $group_start;
+		$data['group_end']     = $group_end;
+		
+		$data['degree']         = $certificates_details->degree;
+		
+		return view('result.print',$data);
+	  }
 
 	}
