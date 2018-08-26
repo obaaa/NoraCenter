@@ -35,9 +35,7 @@
 			$this->col[] = ["label"=>"Group NO","name"=>"id"];
 			$this->col[] = ["label"=>"Name","name"=>"name"];
 			$this->col[] = ["label"=>"Fees","name"=>"fees"];
-			// $this->col[] = ["label"=>"Branches","name"=>"branches_id","join"=>"branches,name"];
 			$this->col[] = ["label"=>"Details","name"=>"proposed_time"];
-			// $this->col[] = ["label"=>"Seats","name"=>"trainee_max"];
 			$this->col[] = ["label"=>"Vacant Seats","name"=>"vacant_seats"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
@@ -450,7 +448,7 @@
 
         // add degrees
 
-        CRUDBooster::redirect(CRUDBooster::adminPath('groups/details/'.$group->id),'Good work group has been added successfully SMW','success');
+        CRUDBooster::redirect(CRUDBooster::adminPath('groups/details/'.$group->id),'Good work group has been added successfully','success');
 
       }
 
