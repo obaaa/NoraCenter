@@ -11,7 +11,7 @@
         $status = DB::table('certificates')->where('id',$certificates_id)->value('status');
     @endphp
     @if (CRUDBooster::myPrivilegeId() != 3)
-        <form class='' method='post' id="form" enctype="multipart/form-data" action='{{ CRUDBooster::mainpath('status') }}'>
+        <form class='' method='post' id="form" enctype="multipart/form-data" action='{{ CRUDBooster::adminPath('results/status/') }}'>
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type='hidden' name='return_url' value='{{ @$return_url }}'/>
                 <input type='hidden' name='ref_mainpath' value='{{ CRUDBooster::mainpath() }}'/>
