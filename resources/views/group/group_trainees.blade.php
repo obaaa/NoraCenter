@@ -119,7 +119,6 @@
 $lectures_number = DB::table('attendances')->where('groups_id', $row->id)->value('lectures_number');
 $finished_lectures = DB::table('attendances')->where('groups_id', $row->id)->value('finished_lectures');
 $valuenow = intval(($finished_lectures * 100) / $lectures_number);
-
 @endphp --}}
 
 <div class="progress">
@@ -267,16 +266,17 @@ $valuenow = intval(($finished_lectures * 100) / $lectures_number);
                   }, function(){
                       location.href = '{{ CRUDBooster::adminPath("certificates/request/".$group->id."/".$value['id']) }}';
 
-                  });" title="Delete" class="btn btn-success btn-flat">Request</a>
+                  });" title="Delete" class="btn btn-success btn-flat">Request
+                </a>
 
               @elseif($value['certificate_status'] == 'waiting')
-                <code>{{ $value['certificate_status'] }}</code>
-              @else
-                  &nbsp<a href='{{ CRUDBooster::adminPath("certificates/groups_trainees/print/".$group->id."/".$value['id']) }}' target="_blank" title="Print Receipt" class="btn btn-info btn-flat">Print&nbsp<i class='fa fa-print'></i></a>
+                  <code>{{ $value['certificate_status'] }}</code>
+              @elseif($value['certificate_status'] == 'ready')
+                    &nbsp<a href='{{ CRUDBooster::adminPath("certificates/groups_trainees/print/".$group->id."/".$value['id']) }}' target="_blank" title="Print Receipt" class="btn btn-info btn-flat">Print&nbsp<i class='fa fa-print'></i></a>
               @endif
-              &nbsp<a href='{{ CRUDBooster::adminPath("receipt/certificate_fees/".$group->id."/".$value['id']) }}' target="_blank" title="Print Receipt" class="btn btn-info btn-flat">Receipt&nbsp<i class='fa fa-print'></i></a>
+                  &nbsp<a href='{{ CRUDBooster::adminPath("receipt/certificate_fees/".$group->id."/".$value['id']) }}' target="_blank" title="Print Receipt" class="btn btn-info btn-flat">Receipt&nbsp<i class='fa fa-print'></i></a>
             
-              @endif
+            @endif
           </td>
           <td>
             <a href="javascript:void(0)" onclick="swal({
