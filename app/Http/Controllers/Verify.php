@@ -29,7 +29,7 @@ class Verify extends Controller
 			->first(); #classroom_lectures_id
 						  
 		$course = DB::table('courses')
-                          ->where('id',$group->course->id)
+                          ->where('id',$group->courses_id)
 						  ->first();
 		
 		$group_start    = DB::table('classroom_lectures_reserveds')
