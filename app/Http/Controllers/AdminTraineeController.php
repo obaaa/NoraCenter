@@ -407,8 +407,8 @@
 				$groups_trainee[$key]['fees_paid']            = $result->fees - $result->fees_remaining;
 				$groups_trainee[$key]['total_fees_remaining'] = $result->fees_remaining - $result->disscount_value;
 				$attendances = DB::table('attendances')->where('groups_id',$result->groups_id)->first();
-				$attended = DB::table('attendance_trainees')->where('attendances_id',DB::table('attendances')->where('groups_id',$result->groups_id)->value('id'))->where('trainees_id',$result->trainees_id)->where('status','attended')->count();
-				$groups_trainee[$key]['attendances']          = $attended.' -of- '.$attendances->lectures_number;
+				$attended = DB::table('attendance_trainees')->where('attendances_id',DB::table('attendances')->where('groups_id',$result->groups_id)->value('id'))->where('trainees_id',$result->trainees_id)->where('status','attended')->get();
+				$groups_trainee[$key]['attendances']          = count($attended).' -of- '.$attendances->lectures_number;
 				$groups_trainee[$key]['result']               = DB::table('certificates_details')->where('trainees_id',$result->trainees_id)->where('certificates_id',DB::table('certificates')->where('groups_id',$result->groups_id)->value('id'))->value('degree');
 				$groups_trainee[$key]['certificate_status']   = DB::table('certificates_details')->where('certificates_id',DB::table('certificates')->where('groups_id',$result->groups_id)->value('id'))->where('trainees_id',$result->trainees_id)->value('certificate_status');
 			}
