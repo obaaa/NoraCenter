@@ -14,6 +14,7 @@ Route::get('/admin/new_groups/booking/{groups_id}', 'AdminNewGroupsController@ge
 Route::get('/admin/new_groups/trainees/{groups_id}', 'AdminNewGroupsController@getGroupTrainees');
 Route::post('/admin/new_groups/add_trainees', 'AdminNewGroupsController@addGroupTrainees');
 Route::get('/admin/new_groups/delete_trainees/{groups_id}/{trainees_id}', 'AdminNewGroupsController@deleteGroupTrainees');
+Route::post('/admin/new_groups/booking/', 'AdminNewGroupsController@saveBooking');
 
 // مسارات دفع رسوم المجموعات
 Route::get('/admin/register_fees/pay/{groups_id}/{trainees_id}', 'AdminNewGroupsController@payRegisterFeesTrainees');
