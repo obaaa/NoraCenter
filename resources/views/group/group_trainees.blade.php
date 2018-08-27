@@ -1,13 +1,8 @@
 @extends("crudbooster::admin_template")
 @section("content")
 
-  {{-- <script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
-  <script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
-  ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script> --}}
-
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-   {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css"> --}}
-  {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script> --}}
+   
   @if(CRUDBooster::getCurrentMethod() != 'getProfile' && $button_cancel)
     @if(g('return_url'))
     <p><a title='Return' href='{{ g("return_url") }}'><i class='fa fa-chevron-circle-left '></i> &nbsp; {{ trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name]) }}</a></p>
@@ -15,6 +10,7 @@
     <p><a title='Main Module' href='{{ CRUDBooster::mainpath() }}'><i class='fa fa-chevron-circle-left '></i> &nbsp; {{ trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name]) }}</a></p>
     @endif
   @endif
+
   <div class='panel panel-default'>
     <div class='panel-heading'>Details</div>
     <div class='panel-body'>
@@ -124,33 +120,35 @@ $valuenow = intval(($finished_lectures * 100) / $lectures_number);
 <div class="progress">
   <div class="progress-bar" role="progressbar" style="width: {{$valuenow}}%;" aria-valuenow="{{$valuenow}}" aria-valuemin="0" aria-valuemax="100">{{ $valuenow }}%</div>
 </div>
+  @if ($certificates_status != 'finished')
+      
 
-  <form class='form-horizontal' method='post' id="form" enctype="multipart/form-data" action='{{ CRUDBooster::mainpath('add_trainees') }}'>
-    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <input type='hidden' name='return_url' value='{{ @$return_url }}'/>
-    <input type='hidden' name='ref_mainpath' value='{{ CRUDBooster::mainpath() }}'/>
-    <input type='hidden' name='ref_parameter' value='{{ urldecode(http_build_query(@$_GET)) }}'/>
-    <input type='hidden' name='groups_id' value='{{ $group->id }}'/>
-    <div class="box-header">
-       <div class="row">
-        <div class="col-sm-6 col-md-10 col-lg-10">
-          <div class="form-group"  dir="rtl">
-           {{-- <label>Trainees</label> --}}
-           <input list="trainees" required="true" multiple name="trainee" autocomplete="off" placeholder="Enter the name or phone number" class="form-control border-input">
-            <datalist id="trainees" >
-              @foreach ($trainees_not_in as $value)
-                <option value="{{ $value->name }}-{{ $value->phone_number }}">
-              @endforeach
-            </datalist>
+    <form class='form-horizontal' method='post' id="form" enctype="multipart/form-data" action='{{ CRUDBooster::mainpath('add_trainees') }}'>
+      <input type="hidden" name="_token" value="{{ csrf_token() }}">
+      <input type='hidden' name='return_url' value='{{ @$return_url }}'/>
+      <input type='hidden' name='ref_mainpath' value='{{ CRUDBooster::mainpath() }}'/>
+      <input type='hidden' name='ref_parameter' value='{{ urldecode(http_build_query(@$_GET)) }}'/>
+      <input type='hidden' name='groups_id' value='{{ $group->id }}'/>
+      <div class="box-header">
+        <div class="row">
+          <div class="col-sm-6 col-md-10 col-lg-10">
+            <div class="form-group"  dir="rtl">
+            {{-- <label>Trainees</label> --}}
+            <input list="trainees" required="true" multiple name="trainee" autocomplete="off" placeholder="Enter the name or phone number" class="form-control border-input">
+              <datalist id="trainees" >
+                @foreach ($trainees_not_in as $value)
+                  <option value="{{ $value->name }}-{{ $value->phone_number }}">
+                @endforeach
+              </datalist>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-2 col-lg-2">
+            <button type="submit" class="btn btn-primary btn-flat btn-block">Add Trainees</button><hr>
           </div>
         </div>
-        <div class="col-sm-6 col-md-2 col-lg-2">
-          <button type="submit" class="btn btn-primary btn-flat btn-block">Add Trainees</button><hr>
-        </div>
       </div>
-    </div>
-  </form>
-
+    </form>
+  @endif
   <div class="box">
     <div class="box-header">
     </div>
@@ -165,7 +163,9 @@ $valuenow = intval(($finished_lectures * 100) / $lectures_number);
           <th>Register fees</th>
           <th>group fees</th>
           <th>certificates fees</th>
-          <th>Action</th>
+          @if ($certificates_status != 'finished')
+            <th>Action</th>
+          @endif
          </tr>
     </thead>
     <tbody>
@@ -278,6 +278,7 @@ $valuenow = intval(($finished_lectures * 100) / $lectures_number);
             
             @endif
           </td>
+          @if ($certificates_status != 'finished')
           <td>
             <a href="javascript:void(0)" onclick="swal({
                 title: '{{ trans('crudbooster.delete_title_confirm') }}',
@@ -311,6 +312,7 @@ $valuenow = intval(($finished_lectures * 100) / $lectures_number);
                 });" title="Convert" class="btn btn-info btn-flat">Convert</a>
           </td>
          </tr>
+         @endif
          {{-- @php
            $key++;
          @endphp --}}
