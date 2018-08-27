@@ -99,8 +99,8 @@
 	        |
 	        */
 	        $this->addaction = array();
-          $this->addaction[] = ['label'=>'booking','url'=>CRUDBooster::mainpath('booking/[id]'),'icon'=>'fa fa-send','color'=>'primary'];
-          $this->addaction[] = ['label'=>'Trainees','url'=>CRUDBooster::mainpath('trainees/[id]'),'icon'=>'fa fa-users','color'=>'success'];
+          $this->addaction[] = ['label'=>'Booking','url'=>CRUDBooster::mainpath('booking/[id]'),'icon'=>'fa fa-send','color'=>'primary'];
+          $this->addaction[] = ['label'=>'Details','url'=>CRUDBooster::mainpath('trainees/[id]'),'icon'=>'fa fa-users','color'=>'success'];
 
 	        /*
 	        | ----------------------------------------------------------------------
@@ -454,24 +454,7 @@
 
       //
       public function getGroupTrainees($groups_id) {
-        // check
-
-        $data = [];
-        $data['group'] = DB::table('groups')->where('id',$groups_id)->first();
-        $trainees = DB::table('cms_users')->whereIn('id',NoraCenter::getTraineesgroupIds($groups_id))->select('id','name','phone_number')->get();
-        $key = 0;
-        foreach ($trainees as $trainee) {
-          $data['trainees'][$key]['id'] = $trainee->id;
-          $data['trainees'][$key]['name'] = $trainee->name;
-          $data['trainees'][$key]['phone_number'] = $trainee->phone_number;
-          $data['trainees'][$key]['groups_trainee'] = DB::table('groups_trainees')->where('groups_id',$groups_id)->where('trainees_id',$trainee->id)->select('register_fees', 'fees_remaining', 'certificate_fees','status', 'disscount_value')->first();
-          $data['trainees'][$key]['certificate_status'] = DB::table('certificates_details')->where('certificates_id',DB::table('certificates')->where('groups_id',$groups_id)->value('id'))->where('trainees_id',$trainee->id)->value('certificate_status');
-          $key++;
-        }
-        $data['trainees_not_in'] = DB::table('cms_users')->where('id_cms_privileges',7)->whereNotIn('id',NoraCenter::getTraineesgroupIds($groups_id))->select('id','name','phone_number')->get()->toArray();
-        $data['page_title'] = "Groups Trainees";
-        // var_dump($data['trainees']);
-
+        $data = NoraCenter::getGroupTraineesData($groups_id);
         $this->cbView('group.group_trainees',$data);
       }
 
