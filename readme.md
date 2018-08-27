@@ -12,11 +12,6 @@
 نظام نورا هو نظام مقدم من [أوبااا](http://obaaa.sd) للتصميم والبرمجة مخصص لادارة العملية التعليمة. يقدم مساحة موحده للمتدرب والمدرب واﻹداره، يتيح للمتدرب التسجيل من خلاله  بالمركز او المعهد واﻹلتحاق بالكورسات ومتابعة الحضور والدفعيات وطلب الشهاده وغيرها من الخصائص، كما يتم ربطه بموقع ويب خاص وتطبيق للجوال...
 
 
-<p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/vendor/crudbooster/login.jpg"></p>
-
-<p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/img/certificate.png"></p>
-
-
 ## أجزاء النظام
 1. المعلومات اﻷساسية:
 الاسم، الموقع، أرقام التواصل ، أوقات العمل، ألخ...
@@ -56,6 +51,15 @@
    10.  توفر تطبيق للهواتف يتيح الدخول وإدارة الحسابات بكل سهولة.
    11. يمكن أن يعمل على أجهزة مختلفة مع إمكانية ربـطـها. ويعمل بصورة محلية أو يرفع على الانترنت.
 
+
+>login
+<p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/vendor/crudbooster/login.jpg"></p>
+
+>certificate
+<p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/img/certificate.png"></p>
+
+>Receipt
+<p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/img/Receipt.png"></p>
 
 ________________
 
