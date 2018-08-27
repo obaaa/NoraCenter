@@ -5,6 +5,7 @@
 	// use Request;
 	use DB;
 	use CRUDBooster;
+	use NoraCenter;
 
 	class AdminAttendancesController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -236,7 +237,8 @@
 	        //Your code here
             if (CRUDBooster::myPrivilegeName() == 'Trainer') {
              $query->where('attendances.trainers_id', CRUDBooster::myId());
-            }
+			}
+			$query->where('attendances.status','open');
 
 	    }
 
@@ -416,43 +418,44 @@
 
             $groups_id = DB::table('attendances')->where('id',$request->attendances_id)->value('groups_id');
             $group = DB::table('groups')->where('id',$groups_id)->first();
-            $trainer = DB::table('cms_users')->where('trainers_id',$group->trainers_id)->value('name');
+            $trainer = DB::table('cms_users')->where('id',$group->trainers_id)->value('name');
 
 
 
-            // sendNotification to trainer
-            $config[] = [];
-            $config['content'] = '[ شكرا لك لقد قمت بواجبك تبقى لك إنزال درجات المجموعة ] '.$group->name;
-            $config['to'] = CRUDBooster::adminPath('degrees');
-            $config['id_cms_users'] = [$group->trainers_id];
-            CRUDBooster::sendNotification($config);
+            // // sendNotification to trainer
+            // $config[] = [];
+            // $config['content'] = '[ شكرا لك لقد قمت بواجبك تبقى لك إنزال درجات المجموعة ] '.$group->name;
+            // $config['to'] = CRUDBooster::adminPath('degrees');
+            // $config['id_cms_users'] = [$group->trainers_id];
+            // CRUDBooster::sendNotification($config);
 
-            // sendNotification to 1,2,3
-            $cms_users_ids = DB::table('cms_users')
-            ->where('id_cms_privileges',1)
-            ->orWhere('id_cms_privileges',2)
-            ->orWhere('id_cms_privileges',3)
-            ->pluck('id');
-            $config[] = [];
-            $config['content'] = '[ الرجاء متابعة درجات المجموعة ] '.$group->name.'['.$group->id.']'.' مع الاستاذ'.$trainer;
-            $config['to'] = CRUDBooster::adminPath('degrees');
-            $config['id_cms_users'] = [$cms_users_ids];
-            CRUDBooster::sendNotification($config);
+            // // sendNotification to 1,2,3
+            // // $cms_users_ids = DB::table('cms_users')
+            // // ->where('id_cms_privileges',1)
+            // // ->orWhere('id_cms_privileges',2)
+            // // ->orWhere('id_cms_privileges',3)
+			// // ->pluck('id');
+			// $cms_users_ids = NoraCenter::getEmployees()->pluck('id');
+            // $config[] = [];
+            // $config['content'] = '[ الرجاء متابعة درجات المجموعة ] '.$group->name.'['.$group->id.']'.' مع الاستاذ'.$trainer;
+            // $config['to'] = CRUDBooster::adminPath('degrees');
+            // $config['id_cms_users'] = [$cms_users_ids];
+            // CRUDBooster::sendNotification($config);
 
-            // sendNotification to trainees
-            $trainees_ids = DB::table('groups_trainees')
-            ->where('groups_id',$group->id)
-            ->pluck('trainees_id');
-            $config[] = [];
-            $config['content'] = 'نتمنى ان تكون قد استفدت من الفترة الماضية ('.$group->name.') على اكمل وجه يمكن ارسال تعليقك على الدراسة والاداء وغيره في تعليق';
-            $config['to'] = CRUDBooster::adminPath();
-            $config['id_cms_users'] = [$trainees_ids];
-            CRUDBooster::sendNotification($config);
-            $config[] = [];
-            $config['content'] = 'اطلبوا العلم من المهد الى اللحد نراك قريبا في مجموعة اخرى';
-            $config['to'] = CRUDBooster::adminPath();
-            $config['id_cms_users'] = [$trainees_ids];
-            CRUDBooster::sendNotification($config);
+            // // sendNotification to trainees
+            // $trainees_ids = DB::table('groups_trainees')
+            // ->where('groups_id',$group->id)
+            // ->pluck('trainees_id');
+            // $config[] = [];
+            // $config['content'] = 'نتمنى ان تكون قد استفدت من الفترة الماضية ('.$group->name.') على اكمل وجه يمكن ارسال تعليقك على الدراسة والاداء وغيره في تعليق';
+            // $config['to'] = CRUDBooster::adminPath();
+            // $config['id_cms_users'] = [$trainees_ids];
+            // CRUDBooster::sendNotification($config);
+            // $config[] = [];
+            // $config['content'] = 'اطلبوا العلم من المهد الى اللحد نراك قريبا في مجموعة اخرى';
+            // $config['to'] = CRUDBooster::adminPath();
+            // $config['id_cms_users'] = [$trainees_ids];
+            // CRUDBooster::sendNotification($config);
 
 
 					}
