@@ -4,6 +4,7 @@
 	use Request;
 	use DB;
 	use CRUDBooster;
+	use NoraCenter;
 
 	class AdminActiveGroupsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -15,8 +16,8 @@
 			$this->orderby = "id,desc";
 			$this->global_privilege = true;
 			$this->button_table_action = true;
-			$this->button_bulk_action = true;
-			$this->button_action_style = "button_icon";
+			$this->button_bulk_action = false;
+			$this->button_action_style = "icon";
 			$this->button_add = false;
 			$this->button_edit = false;
 			$this->button_delete = false;
@@ -107,6 +108,7 @@
 	        |
 	        */
 	        $this->addaction = array();
+			$this->addaction[] = ['label'=>'Details','url'=>CRUDBooster::mainpath('trainees/[id]'),'icon'=>'fa fa-users','color'=>'success'];
 
 
 	        /*
@@ -351,9 +353,10 @@
 
 	    }
 
-
-
-	    //By the way, you can still create your own method in here... :)
+		public function getGroupTrainees($groups_id) {
+        	$data = NoraCenter::getGroupTraineesData($groups_id);
+        	$this->cbView('group.group_trainees',$data);
+      	}
 
 
 	}
