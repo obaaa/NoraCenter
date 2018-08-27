@@ -12,6 +12,8 @@
 // مسارات المجموعات الجديدة
 Route::get('/admin/new_groups/booking/{groups_id}', 'AdminNewGroupsController@getBooking');
 Route::get('/admin/new_groups/trainees/{groups_id}', 'AdminNewGroupsController@getGroupTrainees');
+Route::get('/admin/active_groups/trainees/{groups_id}', 'AdminActiveGroupsController@getGroupTrainees');
+Route::get('/admin/finished_groups/trainees/{groups_id}', 'AdminFinishedGroupsController@getGroupTrainees');
 Route::post('/admin/new_groups/add_trainees', 'AdminNewGroupsController@addGroupTrainees');
 Route::get('/admin/new_groups/delete_trainees/{groups_id}/{trainees_id}', 'AdminNewGroupsController@deleteGroupTrainees');
 Route::post('/admin/new_groups/booking/', 'AdminNewGroupsController@saveBooking');
@@ -36,6 +38,7 @@ Route::get('admin/attendances/taking_attendance/{attendances_id}/{lectures_id}',
 Route::get('admin/attendances/lectures/{id}','AdminAttendancesController@getLectures');
 Route::post('admin/attendances/add_attendance','AdminAttendancesController@add_attendance');
 Route::get('admin/attendances/lecturesReport/{id}','AdminAttendancesController@lecturesReport');
+Route::get('admin/finished_attendances/lecturesReport/{id}','AdminFinishedAttendancesController@lecturesReport');
 
 // مسارات درجات المتدربين في المجموعات
 Route::get('admin/degrees/details/{id}','AdminDegreesController@getDetails');
