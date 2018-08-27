@@ -4,6 +4,8 @@
 	use Request;
 	use DB;
 	use CRUDBooster;
+	use NoraCenter;
+
 
 	class AdminFinishedGroupsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -15,12 +17,12 @@
 			$this->orderby = "id,desc";
 			$this->global_privilege = true;
 			$this->button_table_action = true;
-			$this->button_bulk_action = true;
-			$this->button_action_style = "button_icon";
+			$this->button_bulk_action = false;
+			$this->button_action_style = "icon";
 			$this->button_add = false;
 			$this->button_edit = false;
 			$this->button_delete = false;
-			$this->button_detail = true;
+			$this->button_detail = false;
 			$this->button_show = false;
 			$this->button_filter = true;
 			$this->button_import = false;
@@ -30,13 +32,9 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Name","name"=>"name"];
-			$this->col[] = ["label"=>"Branches Id","name"=>"branches_id","join"=>"branches,name"];
-			$this->col[] = ["label"=>"Courses Id","name"=>"courses_id","join"=>"courses,name"];
-			$this->col[] = ["label"=>"Classroom Lectures Id","name"=>"classroom_lectures_id","join"=>"classroom_lectures,id"];
-			$this->col[] = ["label"=>"Trainers Id","name"=>"trainers_id","join"=>"cms_users,name"];
-			$this->col[] = ["label"=>"Trainee Max","name"=>"trainee_max"];
-			$this->col[] = ["label"=>"Vacant Seats","name"=>"vacant_seats"];
+			$this->col[] = ["label"=>"Group NO","name"=>"id"];
+			$this->col[] = ["label"=>"Courses","name"=>"courses_id","join"=>"courses,name"];
+			$this->col[] = ["label"=>"Branch","name"=>"branches_id","join"=>"branches,name"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -146,6 +144,7 @@
 	        |
 	        */
 	        $this->index_button = array();
+			$this->addaction[] = ['label'=>'Details','url'=>CRUDBooster::mainpath('trainees/[id]'),'icon'=>'fa fa-users','color'=>'success'];
 
 
 
@@ -353,9 +352,9 @@
 
 	    }
 
-
-
-	    //By the way, you can still create your own method in here... :)
-
+		public function getGroupTrainees($groups_id) {
+        	$data = NoraCenter::getGroupTraineesData($groups_id);
+        	$this->cbView('group.group_trainees',$data);
+      	}
 
 	}
