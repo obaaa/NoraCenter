@@ -49,7 +49,8 @@ Route::get('admin/results/details/{id}','AdminResultsController@getDetails');
 Route::post('admin/results/status','AdminResultsController@status');
 
 // مسارات الشهادة
-Route::get('/admin/certificates/request/{groups_id}/{trainees_id}/', 'AdminCertificateWaitingsController@groupsTraineesRequest');
+Route::get('/admin/certificates/request/{groups_id}/{trainees_id}/', 'AdminCertificateWaitingsController@getCertificatesRequest');
+Route::post('/admin/certificate_waitings/request/', 'AdminCertificateWaitingsController@postGroupsTraineesRequest');
 Route::get('/admin/certificates/ready/{certificates_details_id}/', 'AdminCertificateWaitingsController@certificatesReady');
 Route::get('/admin/certificates/groups_trainees/print/{groups_id}/{trainees_id}/', 'AdminCertificateWaitingsController@certificatesPrint');
 Route::get('/admin/certificates/groups_trainees/print/{groups_id}/{trainees_id}/', 'AdminAllCertificatesController@certificatesPrint');
