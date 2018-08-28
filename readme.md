@@ -1,4 +1,4 @@
-<div dir=rtl markdown=1> 
+<div dir=rtl markdown=1>
 <p align="center"><img src="https://raw.githubusercontent.com/obaaa8/NoraCenter/master/public/vendor/crudbooster/1.png"></p>
 
 ## تعريف
@@ -66,8 +66,7 @@ www.obaaa.sd | info@obaaa.sd | +249111700011
 
 ## الثغرات الأمنية
 
-إذا اكتشفت وجود ثغرة أمنية في NoraCenter ، يرجى إرسال بريد إلكتروني عبر [obaaa8@gmail.com](mailto:obaaa8@gmail.com).
-
+إذا اكتشفت وجود ثغرة أمنية في NoraCenter ، يرجى إرسال بريد إلكتروني إلى [obaaa8@gmail.com](mailto:obaaa8@gmail.com).
 ## الرخصة
 
 نورا للمراكز نظام مفتوح تحت رخصة [MIT license](https://opensource.org/licenses/MIT).
