@@ -15,11 +15,16 @@ class Verify extends Controller
      * @return Response
      */
     public function __invoke($verify)
-    {
+    { 
         $certificates_details = DB::table('certificates_details')
 						  ->where('verify',$verify)
                           ->first();
-                          
+                    
+        if(!$certificates_details) {
+            print 'Failed to verify...';
+            dd();
+        }
+
         $trainee = DB::table('cms_users')
                  ->where('id',$certificates_details->trainees_id)
 				 ->first();
