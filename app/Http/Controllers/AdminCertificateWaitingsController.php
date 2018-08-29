@@ -4,7 +4,7 @@
 	use illuminate\Http\Request;
 	use DB;
 	use CRUDBooster;
-
+  use NoraCenter;
 
 	class AdminCertificateWaitingsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -342,14 +342,19 @@
 
 	  public function getCertificatesRequest($groups_id, $trainees_id)
 	  {
-		$this->cbLoader();
-        $module = CRUDBooster::getCurrentModule();
-        $row = DB::table($this->table)->where($this->primary_key, $groups_id)->first();
-        if (! CRUDBooster::isView()) {
-            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
-		}
-		
+      // $id = str_replace('"', '', $trainees_id);
+      // dd($id);
+      if (!NoraCenter::isEmployee() && CRUDBooster::myId() != $trainees_id) {
+        CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+      }
+		// $this->cbLoader();
+    //     $module = CRUDBooster::getCurrentModule();
+    //     $row = DB::table($this->table)->where($this->primary_key, $groups_id)->first();
+    //     if (! CRUDBooster::isView() or CRUDBooster::myId() <> $trainees_id) {
+    //         CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
+    //         CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+		//     }
+
 		  $data = [];
 		  $data['trainees_id'] = $trainees_id;
 		  $data['groups_id'] = $groups_id;
@@ -362,10 +367,10 @@
         //     CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
         // }
 		// DB::table('certificates_details')->where('trainees_id',$trainees_id)->where('certificates_id',DB::table('certificates')->where('groups_id',$groups_id)->value('id'))->update(['certificate_status' => 'waiting']);
-		
+
 		// CRUDBooster::redirectBack('success');
 	}
-	
+
 	public function postGroupsTraineesRequest(Request $request) {
 		//   dd($request);
 		$group = DB::table('groups')->where('id',$request->groups_id)->first();
@@ -374,10 +379,10 @@
 			DB::table('certificates_details')->where('certificates_id',DB::table('certificates')->where('groups_id',$group->id)->value('id'))->where('trainees_id',$request->trainees_id)->update(['certificate_status' => 'waiting',]);
 			DB::table('cms_users')->where('id',$request->trainees_id)->update(['name_english' => $name_english,]);
             // CRUDBooster::redirect(CRUDBooster::adminPath(),'تم التقديم لطلب الشهادة بنجاح، يرجى دفع مستحقات الشهادة','success');
-			CRUDBooster::redirect(CRUDBooster::adminPath('certificates/request/'.$group->id.'/'.$request->trainees_id),' يرجى دفع مستحقات الشهادة','success');
+        CRUDBooster::redirect(CRUDBooster::adminPath(),'تم طلب الشهاده بنجاح.سيتم إشعارك عندما تكون جاهذه','success');
         }
           CRUDBooster::redirect(CRUDBooster::adminPath('certificates/request/'.$group->id.'/'.$request->trainees_id),'خطأ في الادخال يجب أن يكون الاسم حروف فقط وباللغة الانجليزية!','warning');
-        
+
 	  }
 
 	}
