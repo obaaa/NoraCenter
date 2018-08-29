@@ -65,7 +65,7 @@
 
 
 
-##لقطات
+## لقطات
 
 >login
 <p align="center"><img src="https://github.com/obaaa8/NoraCenter/blob/master/public/vendor/crudbooster/login.jpg"></p>
