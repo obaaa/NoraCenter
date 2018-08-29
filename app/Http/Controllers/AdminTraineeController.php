@@ -19,7 +19,7 @@
 			$this->orderby = "id,desc";
 			$this->global_privilege = true;
 			$this->button_table_action = true;
-			$this->button_bulk_action = true;
+			$this->button_bulk_action = false;
 			$this->button_action_style = "button_icon";
 			$this->button_add = true;
 			$this->button_edit = true;
@@ -262,6 +262,13 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
+        $this->cbLoader();
+  			$module = CRUDBooster::getCurrentModule();
+  			$row = DB::table($this->table)->where($this->primary_key, $id)->first();
+  			if (NoraCenter::isTrainee()) {
+  				CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
+  				CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+  			}
           $query->where('cms_users.id_cms_privileges',7);
 	    }
 
@@ -347,7 +354,13 @@
 
 	    }
 
-		public function getDetail($id) {
+		public function getDetail($id = null) {
+      $is_id = 1;
+      if ($id == null){
+        $id = CRUDBooster::myId();
+        $is_id = 0;
+      }
+
 			$this->cbLoader();
 			$module = CRUDBooster::getCurrentModule();
 			$row = DB::table($this->table)->where($this->primary_key, $id)->first();
@@ -370,7 +383,8 @@
 			$module = CRUDBooster::getCurrentModule();
 
 			$page_menu = Route::getCurrentRoute()->getActionName();
-			$page_title = trans("crudbooster.detail_data_page_title", ['module' => $module->name, 'name' => $row->{$this->title_field}]);
+			$page_title = 'Dashbord';
+			// $page_title = trans("crudbooster.detail_data_page_title", ['module' => $module->name, 'name' => $row->{$this->title_field}]);
 			$command = 'detail';
 
 			Session::put('current_row_id', $id);
@@ -410,11 +424,20 @@
 				$attended = DB::table('attendance_trainees')->where('attendances_id',DB::table('attendances')->where('groups_id',$result->groups_id)->value('id'))->where('trainees_id',$result->trainees_id)->where('status','attended')->get();
 				$groups_trainee[$key]['attendances']          = count($attended).' -of- '.$attendances->lectures_number;
 				$groups_trainee[$key]['result']               = DB::table('certificates_details')->where('trainees_id',$result->trainees_id)->where('certificates_id',DB::table('certificates')->where('groups_id',$result->groups_id)->value('id'))->value('degree');
-				$groups_trainee[$key]['certificate_status']   = DB::table('certificates_details')->where('certificates_id',DB::table('certificates')->where('groups_id',$result->groups_id)->value('id'))->where('trainees_id',$result->trainees_id)->value('certificate_status');
+				$groups_trainee[$key]['certificates_details_status']   = DB::table('certificates_details')->where('certificates_id',DB::table('certificates')->where('groups_id',$result->groups_id)->value('id'))->where('trainees_id',$result->trainees_id)->value('certificate_status');
+				$groups_trainee[$key]['certificates_status']   = DB::table('certificates')->where('groups_id',$result->groups_id)->value('status');
 			}
+        // dd($groups_trainee);
+      $table_col[] = ["label"=>"group","name"=>"group"];
+      $table_col[] = ["label"=>"course","name"=>"course"];
+      $table_col[] = ["label"=>"fees paid","name"=>"fees_paid"];
+      $table_col[] = ["label"=>"fees remaining","name"=>"fees_remaining"];
+      $table_col[] = ["label"=>"attendances","name"=>"attendances"];
+      $table_col[] = ["label"=>"certificate","name"=>"certificate"];
+      $table_row = $groups_trainee;
 
-
-			return view('trainee.profile', compact('row',
+			return view('trainee.profile', compact(
+              'row',
 							'page_menu',
 							'page_title',
 							'command',
@@ -422,8 +445,11 @@
 							'join_date',
 							'register_fees',
 							'result',
-							'groups_trainee',
-							'fees_remaining'
+							'table_row',
+							'fees_remaining',
+							'table_col'
+							// 'is_id'
 						));
 		}
+
 	}

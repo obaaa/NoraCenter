@@ -9,12 +9,16 @@
 |
 */
 
+// dashbord
+Route::get('/dashbord', 'DashbordControllers@getProfile');
+
 // مسارات المجموعات الجديدة
 Route::get('/admin/new_groups/booking/{groups_id}', 'AdminNewGroupsController@getBooking');
 Route::get('/admin/new_groups/trainees/{groups_id}', 'AdminNewGroupsController@getGroupTrainees');
 Route::get('/admin/active_groups/trainees/{groups_id}', 'AdminActiveGroupsController@getGroupTrainees');
 Route::get('/admin/finished_groups/trainees/{groups_id}', 'AdminFinishedGroupsController@getGroupTrainees');
 Route::post('/admin/new_groups/add_trainees', 'AdminNewGroupsController@addGroupTrainees');
+Route::post('/admin/active_groups/add_trainees', 'AdminNewGroupsController@addGroupTrainees');
 Route::get('/admin/new_groups/delete_trainees/{groups_id}/{trainees_id}', 'AdminNewGroupsController@deleteGroupTrainees');
 Route::post('/admin/new_groups/booking/', 'AdminNewGroupsController@saveBooking');
 

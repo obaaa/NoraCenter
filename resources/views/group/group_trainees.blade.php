@@ -2,7 +2,7 @@
 @section("content")
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-   
+
   @if(CRUDBooster::getCurrentMethod() != 'getProfile' && $button_cancel)
     @if(g('return_url'))
     <p><a title='Return' href='{{ g("return_url") }}'><i class='fa fa-chevron-circle-left '></i> &nbsp; {{ trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name]) }}</a></p>
@@ -121,7 +121,7 @@ $valuenow = intval(($finished_lectures * 100) / $lectures_number);
   <div class="progress-bar" role="progressbar" style="width: {{$valuenow}}%;" aria-valuenow="{{$valuenow}}" aria-valuemin="0" aria-valuemax="100">{{ $valuenow }}%</div>
 </div>
   @if ($certificates_status != 'finished')
-      
+
 
     <form class='form-horizontal' method='post' id="form" enctype="multipart/form-data" action='{{ CRUDBooster::mainpath('add_trainees') }}'>
       <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -275,7 +275,7 @@ $valuenow = intval(($finished_lectures * 100) / $lectures_number);
                     &nbsp<a href='{{ CRUDBooster::adminPath("certificates/groups_trainees/print/".$group->id."/".$value['id']) }}' target="_blank" title="Print Receipt" class="btn btn-info btn-flat"><i class='fa fa-print'>&nbspCertificate</i></a>
               @endif
                   &nbsp<a href='{{ CRUDBooster::adminPath("receipt/certificate_fees/".$group->id."/".$value['id']) }}' target="_blank" title="Print Receipt" class="btn btn-info btn-flat"><i class='fa fa-print'>&nbspReceipt</i></a>
-            
+
             @endif
           </td>
           @if ($certificates_status != 'finished')
