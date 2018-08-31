@@ -3,23 +3,18 @@ module.exports = {
     description: "Education Management System",
     themeConfig:{
         nav: [
+            { text: 'Home', link: '/' },
             { text: 'documentation', link: '/content/' },
+            { text: 'About', link: '/about' },
             { text: 'Obaaa', link: 'http://obaaa.sd' },
         ],
         sidebar: [
-            {
-                title: 'documentation',
-                collapsable: true,
-                children: [
-                '/content/'
-                ]
-            },
+          ['/content/', 'Content'],
+          ['/register_login/', 'Register & login'],
             {
                 title: 'Setting',
-                collapsable: true,
                 children: [
-                '/setting/',
-                '/setting/app.md',
+                '/setting/application_setting.md',
                 '/setting/branche.md',
                 '/setting/classroom.md',
                 '/setting/classroom_lectures.md',
@@ -30,16 +25,10 @@ module.exports = {
             },
             {
                 title: 'Employees',
-                collapsable: true,
                 children: [
-                '/employees/',
                 '/employees/receptionist.md',
                 '/employees/accountant.md',
-                '/employees/trainer.md',
-                // '/employees/classroom_lectures.md',
-                // '/employees/specialties.md',
-                // '/employees/courses.md',
-                // '/employees/manager.md'
+                '/employees/trainer.md'
                 ]
             }
             ]
