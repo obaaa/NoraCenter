@@ -2,14 +2,20 @@
 
 | NO | Title     |
 | :------------- | :------------- |
-| 1       | [Setting](../setting/)       |
-| 2       | [Employees](../employees/)       |
-| 3       | Item Two       |
-| 4       | Item Two       |
-| 5       | Item Two       |
-| 6       | Item Two       |
-| 7       | Item Two       |
-| 8       | Item Two       |
-| 9       | Item Two       |
-| 10       | Item Two       |
-| 11       | Item Two       |
+|1        | Register & Login       |
+|2        | [Setting](../setting/)       |
+|3        | [Employees](../employees/)       |
+|4        | Website       |
+|        |        |
+|5        | Trainee       |
+|6        | Groups       |
+|7        | Attendances       |
+|8        | Results       |
+|9        | Certificates       |
+|        |        |
+|10        | Notification       |
+|11       | Contact       |
+|12       | Account       |
+|13       | Dashbord       |
+|14       | Report       |
+|15       | Logs       |

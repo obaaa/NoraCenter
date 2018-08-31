@@ -1,19 +1,19 @@
 ---
 home: true
-logoImage: /img/logo.png
+heroImage: https://raw.githubusercontent.com/obaaa8/NoraCenter/master/public/img/NoraLogo.png
 actionText: documentation
 actionLink: /content/
 features:
-- title: بيئة موحدة
-  details: يجمع لك نظام نورا للمراكز كل ما تحتاجه في مكان واحد؛ لتدير نشاطك بكل فاعلية.
+- title: Integrated Environment
+  details: Nora Center's system brings you everything you need in one place; to manage your activity effectively.
 
 
-- title: تخصيص عالي
-  details: يمكنك تعديل الخصائص الموجودة أو طلب خصائص جديدة كما تحب.
+- title: High Customize
+  details: You can request to modify existing properties or create new properties as you like.
 
-  
-- title: دعم مستمر
-  details: جميع أجزاء النظام الهامة مفتوحة المصدر، وأحد إلتزامات أوبااا تطويرها ودعمها بإستمرار.
+
+- title: Continuous Support
+  details: All the important parts of the system are open source, and one of the obligations of Obaaa developed and supported continuously.
 
 footer: Developed using VuePress by Obaaa
 ---
