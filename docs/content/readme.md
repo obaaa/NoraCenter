@@ -3,8 +3,8 @@
 | NO | Title     |
 | :------------- | :------------- |
 |1        | Register & Login       |
-|2        | [Setting](../setting/)       |
-|3        | [Employees](../employees/)       |
+|2        | Setting       |
+|3        | Staff     |
 |4        | Website       |
 |        |        |
 |5        | Trainee       |
@@ -16,6 +16,6 @@
 |10        | Notification       |
 |11       | Contact       |
 |12       | Account       |
-|13       | Dashbord       |
+|13       | Dashboard       |
 |14       | Report       |
 |15       | Logs       |
