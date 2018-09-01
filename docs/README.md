@@ -15,5 +15,5 @@ features:
 - title: Continuous Support
   details: All the important parts of the system are open source, and one of the obligations of Obaaa developed and supported continuously.
 
-footer: Developed using VuePress by Obaaa
+footer: Sponsored by Obaaa.sd
 ---
