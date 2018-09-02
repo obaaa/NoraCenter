@@ -1,13 +1,12 @@
 # Features :)
 ---
-
-
 > - [Multi language](#multi-language)
 > - [Multiple users](#multiple-users)
 > - [Include Web site](#include-web-site)
 > - [Groups](#groups)
 > - [Certificates](#certificates)
 > - [Financial transactions](#financial-transactions)
+> - [Notifications](#notifications)
 > - [Integrated system management](#integrated-system-management)
 
 
@@ -45,7 +44,11 @@
   - Dues of staff and trainers.
   - recording Income and expenses movement.
 
+## Notifications
+  - Send notifications to users in different events.
+
 ## Integrated system management
   - Add and modify (branche, classrooms, courses, staff).
   - Add and modify (contact information, Working times, and more).
   - Receiving suggestions and complaints.
+  - View the system event log.
