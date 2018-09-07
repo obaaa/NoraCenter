@@ -348,19 +348,19 @@
             CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
             CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
 		}
-		
+
 		$trainee = DB::table('cms_users')
                  ->where('id',$trainees_id)
 				 ->first();
-		
+
 		$group = DB::table('groups')
 			->where('id',$groups_id)
 			->first(); #classroom_lectures_id
-						  
+
 		$course = DB::table('courses')
                           ->where('id',$group->courses_id)
 						  ->first();
-		
+
 		$group_start    = DB::table('classroom_lectures_reserveds')
                           ->where('groups_id',$groups_id)
                           ->min('date');
@@ -372,29 +372,29 @@
 		$certificate_id = DB::table('certificates')
                           ->where('groups_id',$groups_id)
 						  ->value('id');
-						  
+
 		$certificates_details = DB::table('certificates_details')
 						  ->where('certificates_id',$certificate_id)
 						  ->where('trainees_id',$trainees_id)
 						  ->first();
-						  
+
 		$data['trainee_photo'] = $trainee->photo;
         $data['trainee_id']    = $trainee->id;
 		$data['trainee_name']  = $trainee->name_english;
 
 		$data['groups_id']  = $groups_id;
-		
+
 		$data['course_name']   = $course->name;
 
 		$data['verify']   = $certificates_details->verify;
-		
+
         $data['group_start']   = $group_start;
 		$data['group_end']     = $group_end;
-		
+
 		$data['degree']         = $certificates_details->degree;
-		
+
 		return view('result.print',$data);
-		
+
 	  }
 
 	  public function certificatesDetailsPrint($certificates_details_id) {
@@ -405,7 +405,7 @@
             CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
             CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
 		}
-		
+
 		$certificates_details = DB::table('certificates_details')
 						  ->where('id',$certificates_details_id)
 						  ->first();
@@ -417,15 +417,15 @@
 		$certificate = DB::table('certificates')
                           ->where('id',$certificates_details->certificates_id)
 						  ->first();
-		
+
 		$group = DB::table('groups')
 			->where('id',$certificate->groups_id)
 			->first(); #classroom_lectures_id
-						  
+
 		$course = DB::table('courses')
                           ->where('id',$group->courses_id)
 						  ->first();
-		
+
 		$group_start    = DB::table('classroom_lectures_reserveds')
                           ->where('groups_id',$group->id)
                           ->min('date');
@@ -433,22 +433,22 @@
         $group_end      = DB::table('classroom_lectures_reserveds')
                           ->where('groups_id',$group->id)
 						  ->max('date');
-						  
+
 		$data['trainee_photo'] = $trainee->photo;
         $data['trainee_id']    = $trainee->id;
 		$data['trainee_name']  = $trainee->name_english;
 
 		$data['groups_id']  = $group->id;
-		
+
 		$data['course_name']   = $course->name;
 
 		$data['verify']   = $certificates_details->verify;
-		
+
         $data['group_start']   = $group_start;
 		$data['group_end']     = $group_end;
-		
+
 		$data['degree']         = $certificates_details->degree;
-		
+
 		return view('result.print',$data);
 	  }
 
