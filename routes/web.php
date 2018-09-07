@@ -64,6 +64,10 @@ Route::get('/admin/certificate_waiting/print/{certificates_details_id}/', 'Admin
 // التحقق من صحة الشهادة
 Route::get('/verify/{verify}','Verify');
 
+
+Route::get('admin/get_messages','AdminMessagesController@getMessages');
+Route::post('admin/messages/save','AdminMessagesController@saveMessages');
+
 // المسار الجزر
 Route::get('/', function () {
     return view('welcome');
