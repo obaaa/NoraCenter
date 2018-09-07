@@ -17,7 +17,7 @@
 			$this->button_table_action = true;
 			$this->button_bulk_action = true;
 			$this->button_action_style = "button_icon";
-			$this->button_add = false;
+			$this->button_add = true;
 			$this->button_edit = false;
 			$this->button_delete = false;
 			$this->button_detail = false;
@@ -30,19 +30,38 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-      $this->col[] = ["label"=>"Name","name"=>"sent_from_id","join"=>"cms_users,name"];
 
+      $this->col[] = ["label"=>"image","name"=>"sent_from_id","image"=>true,"join"=>"cms_users,photo"];
+        $this->col[] = ["label"=>"Name","name"=>"sent_from_id","join"=>"cms_users,name"];
+
+      // $this->col[] = ["label"=>"Name","name"=>"sent_from_id","callback"=>function($row) {
+      //   if ($row->to == 'Manager') {
+      //     $result = DB::table('cms_users')->where('id',$row->sent_from_id)->value('name');
+      //   }else {
+      //     $result = DB::table('cms_users')->where('id',$row->sent_to_id)->value('name');
+      //   }
+			// 	return $result;
+			// }];
+      // if ($row->sent_from_id){
+      // }elseif($row->sent_to_id) {
+      //   $this->col[] = ["label"=>"Name","name"=>"sent_to_id","join"=>"cms_users,name"];
+      // }
 			// $this->col[] = ["label"=>"Name","name"=>"name"];
 			// $this->col[] = ["label"=>"Email","name"=>"email"];
 			// $this->col[] = ["label"=>"Subject","name"=>"subject"];
 			// $this->col[] = ["label"=>"Movement","name"=>"movement"];
-			$this->col[] = ["label"=>"Read","name"=>"is_read"];
+			// $this->col[] = ["label"=>"Send at","name"=>"created_at"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Subject','name'=>'subject','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Contact Message','name'=>'contact_message','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+      if (CRUDBooster::getCurrentMethod() != 'getDetail') {
+        $this->form[] = ['label'=>'Privileges','name'=>'id_cms_privileges','type'=>'select','validation'=>'required','width'=>'col-sm-9','datatable'=>'cms_privileges,name'];
+      }
+			$this->form[] = ['label'=>'To','name'=>'sent_to_id','type'=>'select','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'cms_users,name','datatable_format'=>"name,' - ',phone_number",'parent_select'=>'id_cms_privileges'];
+
+			// $this->form[] = ['label'=>'To','name'=>'contact_message','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Contact Message','name'=>'content','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
@@ -240,6 +259,13 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
+        $this->cbLoader();
+            $module = CRUDBooster::getCurrentModule();
+            // $row = DB::table($this->table)->where($this->primary_key, $request->groups_id)->first();
+            if (! CRUDBooster::isUpdate()) {
+                CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
+                CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+    		}
 
         // $contact =DB::table('contact_forms')->get();
         // $contact = collect($contact);
@@ -260,12 +286,14 @@
         //   ]);
 
 	        //Your code here
-          if (!in_array(CRUDBooster::myPrivilegeId(), [1,2], TRUE)){
+          // if (!in_array(CRUDBooster::myPrivilegeId(), [1,2], TRUE)){
            // $query->where('contact_forms.email', DB::table('cms_users')->where('id',CRUDBooster::myId())->value('email'));
-           $query->where('messages.sent_from_id', CRUDBooster::myId())->orWhere('messages.sent_to_id', CRUDBooster::myId());
+           // $query->where('messages.sent_from_id', CRUDBooster::myId())->orWhere('messages.sent_to_id', CRUDBooster::myId());
            // ->value('name'));
-         }
-         $query->where('messages.is_last',1)->orderBy('messages.is_read');
+         // }
+
+         // $query->where('messages.is_last',1)->where('messages.to','Manager')->orderBy('messages.is_read');
+         $query->where('messages.is_last',1)->where('messages.to','Manager')->orderBy('messages.created_at','DESC');
 	    }
 
 	    /*
@@ -305,6 +333,51 @@
 	    |
 	    */
 	    public function hook_before_add(&$postdata) {
+
+        $id_cms_privileges = $postdata['id_cms_privileges'];
+
+        // $sent_to_id = $postdata['sent_to_id'];
+        // $postdata['content'] = $postdata['contact_message'];
+        // $created_at = $postdata['created_at'];
+        $postdata['is_last'] = 1;
+
+        switch ($id_cms_privileges) {
+          case 1:
+            $postdata['to'] = 'Super Administrator';
+            break;
+          case 2:
+            $postdata['to'] = 'Manager';
+            break;
+          case 3:
+            $postdata['to'] = 'Receptionist';
+            break;
+          case 4:
+            $postdata['to'] = 'Accountant';
+            break;
+          case 5:
+            $postdata['to'] = 'Marketer';
+            break;
+          case 6:
+            $postdata['to'] = 'Trainer';
+            break;
+          case 7:
+            $postdata['to'] = 'Trainee';
+            break;
+
+          default:
+            // code...
+            break;
+        }
+
+        $config[] = [];
+        $config['content'] = $postdata['content'];
+        $config['to'] = CRUDBooster::adminPath('get_messages');
+        $config['id_cms_users'] = [$postdata['sent_to_id']];
+        CRUDBooster::sendNotification($config);
+
+        unset($postdata['id_cms_privileges']);
+
+        // dd($postdata);
 	        //Your code here
           // if (in_array(CRUDBooster::myPrivilegeId(), [1,2], TRUE))
           //   $postdata['movement'] = 'in';
@@ -382,6 +455,7 @@
         }
         $data['results'] = DB::table('messages')->where('messages.sent_from_id', $value_id)->orWhere('messages.sent_to_id', $value_id)->orderBy('created_at', 'DESC')->paginate(10);
         $data['trainee_id'] = $value_id;
+        $data['trainee_name'] = DB::table('cms_users')->where('id',$value_id)->value('name');
         $this->cbView('contact.index',$data);
       }
       public function getMessages()
@@ -396,7 +470,7 @@
 
           DB::table('messages')->where('messages.sent_from_id', CRUDBooster::myId())->orWhere('messages.sent_to_id', CRUDBooster::myId())->update(['is_last'=>NULL]);
           $messages_id = DB::table('messages')->insertGetId([
-            'to'           => 'trainee',
+            'to'           => 'Manager',
             'sent_from_id' => CRUDBooster::myId(),
             // 'sent_to_id'   => $request->trainee_id,
             'content'      => $request->content,
@@ -405,7 +479,7 @@
           ]);
 
             $config[] = [];
-            $config['content'] = $request->content;
+            $config['content'] = "message from: ".DB::table('cms_users')->where('id',CRUDBooster::myId())->value('name');
             $config['to'] = CRUDBooster::adminPath('messages/details/'.$messages_id);
             $config['id_cms_users'] = [1,2];
             CRUDBooster::sendNotification($config);
@@ -413,7 +487,8 @@
           return back();
 
         }else {
-          DB::table('messages')->where('messages.sent_from_id', $request->trainee_id)->orWhere('messages.sent_to_id', $request->trainee_id)->update(['is_last'=>NULL]);
+
+          // DB::table('messages')->where('messages.sent_from_id', $request->trainee_id)->orWhere('messages.sent_to_id', $request->trainee_id)->notWhere('messages.to','<>','Manager')->update(['is_last'=>NULL]);
           DB::table('messages')->insert([
             'to'           => 'trainee',
             // 'sent_from_id' => CRUDBooster::myId(),
@@ -431,6 +506,7 @@
 
           return back();
         }
+
       }
 
 	    //By the way, you can still create your own method in here... :)
