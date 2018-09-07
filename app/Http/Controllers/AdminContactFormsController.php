@@ -78,7 +78,7 @@
 	        |
 	        */
 	        $this->addaction = array();
-          $this->addaction[] = ['labelurl'=>CRUDBooster::mainpath('detail/[id]'),'icon'=>'fa fa-arrow-right','color'=>'primary'];
+          $this->addaction[] = ['url'=>CRUDBooster::mainpath('details/[id]'),'icon'=>'fa fa-arrow-right','color'=>'primary']; # get details
 
 
 	        /*
@@ -367,7 +367,10 @@
 
 	    }
 
-
+      public function getDetails($id)
+      {
+        dd($id);
+      }
 
 	    //By the way, you can still create your own method in here... :)
 
