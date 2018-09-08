@@ -36,6 +36,7 @@ Route::post('/admin/convert_groups_trainees/', 'AdminNewGroupsController@Convert
 Route::get('/admin/receipt/register_fees/{groups_id}/{trainees_id}/', 'Receipt@registerFees');
 Route::get('/admin/receipt/groups_fees/{groups_id}/{trainees_id}/', 'Receipt@groupFees');
 Route::get('/admin/receipt/certificate_fees/{groups_id}/{trainees_id}/', 'Receipt@certificateFees');
+Route::get('/admin/receipt/trainers/{groups_id}/', 'Receipt@traineersGroupFees');
 
 // مسارات حضور المجموعات
 Route::get('admin/attendances/taking_attendance/{attendances_id}/{lectures_id}','AdminAttendancesController@taking_attendance');
@@ -70,6 +71,10 @@ Route::post('admin/messages/save','AdminMessagesController@saveMessages');
 
 //
 Route::get('admin/trainers_payments/getPay/{id}','AdminTrainersPaymentsController@getPay');
+
+//
+Route::post('admin/trainers_payments/pay','AdminTrainersPaymentsController@pay');
+
 
 // المسار الجزر
 Route::get('/', function () {
