@@ -34,8 +34,8 @@
           <td><code>{{ $row->price_trainer_paid }}</code></td>
         </tr>
         <tr>
-          <th>price_trainer_remailing</th>
-          <td><code>{{ $row->price_trainer_remailing }}</code></td>
+          <th>price_trainer_remaining</th>
+          <td><code>{{ $row->price_trainer_remaining }}</code></td>
         </tr>
     </table>
     </div>
