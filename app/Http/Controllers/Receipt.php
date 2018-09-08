@@ -66,4 +66,23 @@ class Receipt extends Controller {
     return view('receipt.receipt_ac',$data);
 	}
 
+  // 3
+  public static function traineersGroupFees($groups_id) {
+    $movement_money_trainers = DB::table('movement_money_trainers')
+        ->where('groups_id',$groups_id)
+        ->where('type','groups_fees')
+        ->get()->last();
+
+    $data = [];
+    $data['receipt_id']   = $movement_money_trainers->id;
+    $data['created_at']   = $movement_money_trainers->created_at;
+    $trainers_id = DB::table('groups')->where('id',$groups_id)->value('trainers_id');
+    $data['trainer_name'] = DB::table('cms_users')->where('id',$trainers_id)->value('name');
+    $data['money']        = $movement_money_trainers->money;
+    $data['type']         = trans('crudbooster.group_fees');
+    $data['group_name']   = DB::table('groups')->where('id',$groups_id)->value('name');
+    $data['created_by']   =  DB::table('cms_users')->where('id',$movement_money_trainers->created_by)->value('name');
+    return view('receipt.receipt_trainer',$data);
+  }
+
 }
