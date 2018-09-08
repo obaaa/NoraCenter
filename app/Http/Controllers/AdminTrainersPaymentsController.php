@@ -1,9 +1,11 @@
 <?php namespace App\Http\Controllers;
 
 	use Session;
-	use Request;
+	use Illuminate\Http\Request;
 	use DB;
 	use CRUDBooster;
+  use NoraCenter;
+  use App\Http\Controllers\Notification;
 
 	class AdminTrainersPaymentsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -125,6 +127,7 @@
           $this->addaction[] = ['label'=>'Details','icon'=>'fa fa-arrows-alt','color'=>'primary','url'=>CRUDBooster::mainpath('getPay').'/[id]','showIf'=>"CRUDBooster::myPrivilegeId() == 1"];
           $this->addaction[] = ['label'=>'Details','icon'=>'fa fa-arrows-alt','color'=>'primary','url'=>CRUDBooster::mainpath('getPay').'/[id]','showIf'=>"CRUDBooster::myPrivilegeId() == 2"];
           $this->addaction[] = ['label'=>'Details','icon'=>'fa fa-arrows-alt','color'=>'primary','url'=>CRUDBooster::mainpath('getPay').'/[id]','showIf'=>"CRUDBooster::myPrivilegeId() == 4"];
+          // $this->addaction[] = ['label'=>'Print Receipt','icon'=>'fa fa-print','color'=>'info','url'=>CRUDBooster::adminPath('receipt/trainers/').'/[id]', 'confirmation' => true ];
 
 
 	        /*
@@ -364,6 +367,14 @@
 
       public function getPay($id) {
 
+        $this->cbLoader();
+        $module = CRUDBooster::getCurrentModule();
+        $row = DB::table($this->table)->where($this->primary_key, $id)->first();
+        if (! CRUDBooster::isUpdate()) {
+            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+        }
+
 				$data['row'] = DB::table('groups')
 				->where('id',$id)
 				->first();
@@ -376,6 +387,39 @@
 				$this->cbView('account.trainer_accounts',$data);
 	    }
 
+      public function pay(Request $request){
+
+        $this->cbLoader();
+        $module = CRUDBooster::getCurrentModule();
+        $row = DB::table($this->table)->where($this->primary_key, $request->groups_id)->first();
+        if (! CRUDBooster::isUpdate()) {
+            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+        }
+
+        $result = NoraCenter::payFeesTrainer($request->groups_id, $request->pay);
+        if (!$result) {
+          CRUDBooster::redirect(CRUDBooster::adminPath('trainers_payments/getPay/'.$request->groups_id),'Wrong Bay','warning');
+        }
+
+        $group = DB::table('groups')->where('id',$request->groups_id)->first();
+        $trainer_name = DB::table('cms_users')->where('id',$group->trainers_id)->value('name');
+
+        // Notification
+        if ($request->pay != 0) {
+          $postdata = [];
+          $postdata['id_cms_users'] = $group->trainers_id;
+          $postdata['groups_name'] = $group->name;
+          $postdata['amount'] = $request->pay;
+          Notification::payGroupsFeesTrainers($postdata);
+        }
+
+        // add log user amount trainee_name groups_name
+        CRUDBooster::insertLog(trans("notification.logPayGroupsFeesTrainers", ['trainer_name'=>$trainer_name,'groups_name'=>$group->name,'amount' => $request->pay]));
+
+        CRUDBooster::redirect(CRUDBooster::adminPath('trainers_payments'),'Good work, Payment trainer  successfully','success');
+
+    }
 	    //By the way, you can still create your own method in here... :)
 
 
