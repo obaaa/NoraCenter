@@ -84,6 +84,15 @@ class Notification extends Controller {
 	}
 
   // 6
+	public static function payGroupsFeesTrainers($postdata) {
+    $config[] = [];
+    $config['content'] = trans("notification.payGroupsFeesTrainers", ['groups_name' => $postdata['groups_name'], 'amount' => $postdata['amount']]);
+    $config['to'] = CRUDBooster::adminPath();
+    $config['id_cms_users'] = [$postdata['id_cms_users']];
+    CRUDBooster::sendNotification($config);
+	}
+
+  // 7
 	public static function convertGroupsTrainees($postdata) {
     $config[] = [];
     $config['content'] = trans("notification.convertGroupsTrainees", ['current_group_name' => $postdata['current_group_name'], 'to_group_name' => $postdata['to_group_name']]);
