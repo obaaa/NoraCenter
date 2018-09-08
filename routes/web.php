@@ -75,6 +75,12 @@ Route::get('admin/trainers_payments/getPay/{id}','AdminTrainersPaymentsControlle
 //
 Route::post('admin/trainers_payments/pay','AdminTrainersPaymentsController@pay');
 
+//
+Route::get('admin/marketing_payments/getPay/{id}','AdminMarketingPaymentsController@getPay');
+
+//
+Route::post('admin/marketing_payments/pay','AdminMarketingPaymentsController@pay');
+
 
 // المسار الجزر
 Route::get('/', function () {
