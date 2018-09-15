@@ -1,21 +1,23 @@
 <?php namespace App\Http\Controllers;
 
 	use Session;
-	use Request;
-	use Ramsey\Uuid\Uuid;
+	use Illuminate\Http\Request;
 	use DB;
 	use CRUDBooster;
+  use NoraCenter;
+  use App\Http\Controllers\Notification;
 
-	class AdminAllCertificatesController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminTrainersPaymentsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "id";
+			$this->title_field = "name";
 			$this->limit = "20";
 			$this->orderby = "id,desc";
 			$this->global_privilege = true;
 			$this->button_table_action = true;
+			$this->button_bulk_action = true;
 			$this->button_action_style = "button_icon";
 			$this->button_add = false;
 			$this->button_edit = false;
@@ -24,22 +26,19 @@
 			$this->button_show = false;
 			$this->button_filter = true;
 			$this->button_import = false;
-			$this->button_export = true;
-			$this->table = "certificates_details";
+			$this->button_export = false;
+			$this->table = "groups";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Group ID","name"=>"certificates_id","callback"=>function($row) {
-				return DB::table('certificates')->where('id',$row->certificates_id)->value('groups_id');
-			}];
-			$this->col[] = ["label"=>"Group Name","name"=>"certificates_id","callback"=>function($row) {
-				$groups_id = DB::table('certificates')->where('id',$row->certificates_id)->value('groups_id');
-				return DB::table('groups')->where('id',$groups_id)->value('name');
-			}];
-			$this->col[] = ["label"=>"Trainee","name"=>"trainees_id","join"=>"cms_users,name"];
-			$this->col[] = ["label"=>"Phone","name"=>"trainees_id","join"=>"cms_users,phone_number"];
-			$this->col[] = ["label"=>"updated_at","name"=>"updated_at"];
+			$this->col[] = ["label"=>"Group NO","name"=>"id"];
+			$this->col[] = ["label"=>"Name","name"=>"name"];
+			// $this->col[] = ["label"=>"Course","name"=>"courses_id","join"=>"courses,name"];
+			$this->col[] = ["label"=>"Trainer","name"=>"trainers_id","join"=>"cms_users,name"];
+			$this->col[] = ["label"=>"Pricer","name"=>"price_trainer"];
+			$this->col[] = ["label"=>"Price Paid","name"=>"price_trainer_paid"];
+			$this->col[] = ["label"=>"Price Remaining","name"=>"price_trainer_remaining"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -49,14 +48,40 @@
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ["label"=>"Groups Id","name"=>"groups_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"groups,name"];
-			//$this->form[] = ["label"=>"Trainees Id","name"=>"trainees_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"trainees,id"];
+			//$this->form[] = ["label"=>"Name","name"=>"name","type"=>"text","required"=>TRUE,"validation"=>"required|string|min:3|max:70","placeholder"=>"فضلا ادخل احرف فقط"];
+			//$this->form[] = ["label"=>"Branches Id","name"=>"branches_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"branches,name"];
+			//$this->form[] = ["label"=>"Courses Id","name"=>"courses_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"courses,name"];
+			//$this->form[] = ["label"=>"Classroom Lectures Id","name"=>"classroom_lectures_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"classroom_lectures,id"];
+			//$this->form[] = ["label"=>"Trainers Id","name"=>"trainers_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"trainers,id"];
+			//$this->form[] = ["label"=>"Trainee Max","name"=>"trainee_max","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Vacant Seats","name"=>"vacant_seats","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
 			//$this->form[] = ["label"=>"Fees","name"=>"fees","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Percentage Of Trainer","name"=>"percentage_of_trainer","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Amount Paid","name"=>"amount_paid","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Amount Remailing","name"=>"amount_remailing","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Amount Subtotal","name"=>"amount_subtotal","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Discount Amount","name"=>"discount_amount","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Amount Total","name"=>"amount_total","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Price Trainer","name"=>"price_trainer","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Status","name"=>"status","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Price Trainer Paid","name"=>"price_trainer_paid","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Price Trainer Remaining","name"=>"price_trainer_remaining","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Marketing Value","name"=>"marketing_value","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Type Booking","name"=>"type_booking","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Proposed Time","name"=>"proposed_time","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Register Fees","name"=>"register_fees","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Certificate Fees","name"=>"certificate_fees","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Certificate Status","name"=>"certificate_status","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
 			//$this->form[] = ["label"=>"Fees Paid","name"=>"fees_paid","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
 			//$this->form[] = ["label"=>"Fees Remaining","name"=>"fees_remaining","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"Disscount Value","name"=>"disscount_value","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"Status","name"=>"status","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Certificate Status","name"=>"certificate_status","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Fees Total","name"=>"fees_total","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Register Fees Paid","name"=>"register_fees_paid","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Register Fees Remaining","name"=>"register_fees_remaining","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Register Fees Total","name"=>"register_fees_total","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Certificate Fees Paid","name"=>"certificate_fees_paid","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Certificate Fees Remaining","name"=>"certificate_fees_remaining","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Certificate Fees Total","name"=>"certificate_fees_total","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Publication","name"=>"publication","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
 			# OLD END FORM
 
 			/*
@@ -86,7 +111,7 @@
 	        |
 	        */
 	        $this->addaction = array();
-			$this->addaction[] = ['label'=>'Print','icon'=>'fa fa-print','color'=>'info', 'confirmation' => true ,'url'=>CRUDBooster::adminPath("certificate_waiting/print").'/[id]'];
+
 
 	        /*
 	        | ----------------------------------------------------------------------
@@ -99,6 +124,10 @@
 	        |
 	        */
 	        $this->button_selected = array();
+          $this->addaction[] = ['label'=>'Details','icon'=>'fa fa-arrows-alt','color'=>'primary','url'=>CRUDBooster::mainpath('getPay').'/[id]','showIf'=>"CRUDBooster::myPrivilegeId() == 1"];
+          $this->addaction[] = ['label'=>'Details','icon'=>'fa fa-arrows-alt','color'=>'primary','url'=>CRUDBooster::mainpath('getPay').'/[id]','showIf'=>"CRUDBooster::myPrivilegeId() == 2"];
+          $this->addaction[] = ['label'=>'Details','icon'=>'fa fa-arrows-alt','color'=>'primary','url'=>CRUDBooster::mainpath('getPay').'/[id]','showIf'=>"CRUDBooster::myPrivilegeId() == 4"];
+          // $this->addaction[] = ['label'=>'Print Receipt','icon'=>'fa fa-print','color'=>'info','url'=>CRUDBooster::adminPath('receipt/trainers/').'/[id]', 'confirmation' => true ];
 
 
 	        /*
@@ -243,9 +272,13 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
-	        // 'none','requested','waiting','ready','received'
-		  $query->where('certificates_details.certificate_status','ready')->orderBy('updated_at', 'desc');
-		//   $query->orderBy('updated_at', 'desc');
+
+          $query->where('price_trainer_remaining','<>',0);
+
+          if (CRUDBooster::myPrivilegeName() == 'Trainer') {
+	           $query->where('trainers_id',CRUDBooster::myId());
+          }
+
 	    }
 
 	    /*
@@ -331,125 +364,63 @@
 
 	    }
 
-      public function received($groups_trainees_id) {
-        //Your code here
 
-        DB::table('groups_trainees')->where('id',$groups_trainees_id)->update(['certificate_status' => 'received']);
+      public function getPay($id) {
 
-		CRUDBooster::redirectBack('success');
-      }
+        $this->cbLoader();
+        $module = CRUDBooster::getCurrentModule();
+        $row = DB::table($this->table)->where($this->primary_key, $id)->first();
+        if (! CRUDBooster::isUpdate()) {
+            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+        }
 
+				$data['row'] = DB::table('groups')
+				->where('id',$id)
+				->first();
+        $this->button_addmore = FALSE;
+        $this->button_cancel  = TRUE;
+        $this->button_show    = FALSE;
+        $this->button_add     = FALSE;
+        $this->button_delete  = FALSE;
 
-	  public function certificatesPrint($groups_id, $trainees_id){
-		$this->cbLoader();
+				$this->cbView('account.trainer_accounts',$data);
+	    }
+
+      public function pay(Request $request){
+
+        $this->cbLoader();
         $module = CRUDBooster::getCurrentModule();
         $row = DB::table($this->table)->where($this->primary_key, $request->groups_id)->first();
         if (! CRUDBooster::isUpdate()) {
             CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
             CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
-		}
+        }
 
-		$trainee = DB::table('cms_users')
-                 ->where('id',$trainees_id)
-				 ->first();
+        $result = NoraCenter::payFeesTrainer($request->groups_id, $request->pay);
+        if (!$result) {
+          CRUDBooster::redirect(CRUDBooster::adminPath('trainers_payments/getPay/'.$request->groups_id),'Wrong Bay','warning');
+        }
 
-		$group = DB::table('groups')
-			->where('id',$groups_id)
-			->first(); #classroom_lectures_id
+        $group = DB::table('groups')->where('id',$request->groups_id)->first();
+        $trainer_name = DB::table('cms_users')->where('id',$group->trainers_id)->value('name');
 
-		$course = DB::table('courses')
-                          ->where('id',$group->courses_id)
-						  ->first();
+        // Notification
+        if ($request->pay != 0) {
+          $postdata = [];
+          $postdata['id_cms_users'] = $group->trainers_id;
+          $postdata['groups_name'] = $group->name;
+          $postdata['amount'] = $request->pay;
+          Notification::payGroupsFeesTrainers($postdata);
+        }
 
-		$group_start    = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$groups_id)
-                          ->min('date');
+        // add log user amount trainee_name groups_name
+        CRUDBooster::insertLog(trans("notification.logPayGroupsFeesTrainers", ['trainer_name'=>$trainer_name,'groups_name'=>$group->name,'amount' => $request->pay]));
 
-        $group_end      = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$groups_id)
-						  ->max('date');
+        CRUDBooster::redirect(CRUDBooster::adminPath('trainers_payments'),'Good work, Payment trainer  successfully','success');
 
-		$certificate_id = DB::table('certificates')
-                          ->where('groups_id',$groups_id)
-						  ->value('id');
+    }
+	    //By the way, you can still create your own method in here... :)
 
-		$certificates_details = DB::table('certificates_details')
-						  ->where('certificates_id',$certificate_id)
-						  ->where('trainees_id',$trainees_id)
-						  ->first();
-
-		$data['trainee_photo'] = $trainee->photo;
-        $data['trainee_id']    = $trainee->id;
-		$data['trainee_name']  = $trainee->name_english;
-
-		$data['groups_id']  = $groups_id;
-
-		$data['course_name']   = $course->name;
-
-		$data['verify']   = $certificates_details->verify;
-
-        $data['group_start']   = $group_start;
-		$data['group_end']     = $group_end;
-
-		$data['degree']         = $certificates_details->degree;
-
-		return view('result.print',$data);
-
-	  }
-
-	  public function certificatesDetailsPrint($certificates_details_id) {
-		$this->cbLoader();
-        $module = CRUDBooster::getCurrentModule();
-        $row = DB::table($this->table)->where($this->primary_key, $request->groups_id)->first();
-        if (! CRUDBooster::isUpdate()) {
-            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
-		}
-
-		$certificates_details = DB::table('certificates_details')
-						  ->where('id',$certificates_details_id)
-						  ->first();
-
-		$trainee = DB::table('cms_users')
-                 ->where('id',$certificates_details->trainees_id)
-				 ->first();
-
-		$certificate = DB::table('certificates')
-                          ->where('id',$certificates_details->certificates_id)
-						  ->first();
-
-		$group = DB::table('groups')
-			->where('id',$certificate->groups_id)
-			->first(); #classroom_lectures_id
-
-		$course = DB::table('courses')
-                          ->where('id',$group->courses_id)
-						  ->first();
-
-		$group_start    = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$group->id)
-                          ->min('date');
-
-        $group_end      = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$group->id)
-						  ->max('date');
-
-		$data['trainee_photo'] = $trainee->photo;
-        $data['trainee_id']    = $trainee->id;
-		$data['trainee_name']  = $trainee->name_english;
-
-		$data['groups_id']  = $group->id;
-
-		$data['course_name']   = $course->name;
-
-		$data['verify']   = $certificates_details->verify;
-
-        $data['group_start']   = $group_start;
-		$data['group_end']     = $group_end;
-
-		$data['degree']         = $certificates_details->degree;
-
-		return view('result.print',$data);
-	  }
 
 	}

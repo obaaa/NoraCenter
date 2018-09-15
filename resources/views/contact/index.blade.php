@@ -1,10 +1,12 @@
 @extends("crudbooster::admin_template")
 @section("content")
-  @if(CRUDBooster::getCurrentMethod() != 'getProfile' && $button_cancel)
-    @if(g('return_url'))
-    <p><a title='Return' href='{{ g("return_url") }}'><i class='fa fa-chevron-circle-left '></i> &nbsp; {{ trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name]) }}</a></p>
-    @else
-    <p><a title='Main Module' href='{{ CRUDBooster::mainpath() }}'><i class='fa fa-chevron-circle-left '></i> &nbsp; {{ trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name]) }}</a></p>
+  @if (CRUDBooster::myPrivilegeId() != 7)
+    @if(CRUDBooster::getCurrentMethod() != 'getProfile' && $button_cancel)
+      @if(g('return_url'))
+      <p><a title='Return' href='{{ g("return_url") }}'><i class='fa fa-chevron-circle-left '></i> &nbsp; {{ trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name]) }}</a></p>
+      @else
+      <p><a title='Main Module' href='{{ CRUDBooster::mainpath() }}'><i class='fa fa-chevron-circle-left '></i> &nbsp; {{ trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name]) }}</a></p>
+      @endif
     @endif
   @endif
   <style>
@@ -60,7 +62,7 @@
   <div class="box">
     <div class="messages">
       <div class="box-header">
-        <h2>Chat Messages</h2>
+        <h2>Chat Messages: {{ $trainee_name }}</h2>
         <form class='form-horizontal' method='post' id="form" enctype="multipart/form-data" action='{{ CRUDBooster::mainpath('save') }}'>
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <input type='hidden' name='return_url' value='{{ @$return_url }}'/>

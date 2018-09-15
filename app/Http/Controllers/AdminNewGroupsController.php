@@ -742,7 +742,7 @@
 
         NoraCenter::addFeesTrainer($request->current_group_id);
         NoraCenter::addFeesTrainer($to_group_id);
-        
+
         // Notification
         $postdata = [];
         $postdata['id_cms_users']       = $trainees_id;

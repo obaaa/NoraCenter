@@ -1,12 +1,13 @@
 <?php namespace App\Http\Controllers;
 
 	use Session;
-	use Request;
-	use Ramsey\Uuid\Uuid;
+	use Illuminate\Http\Request;
 	use DB;
 	use CRUDBooster;
+  use NoraCenter;
+  use App\Http\Controllers\Notification;
 
-	class AdminAllCertificatesController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminMarketingPaymentsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
@@ -16,6 +17,7 @@
 			$this->orderby = "id,desc";
 			$this->global_privilege = true;
 			$this->button_table_action = true;
+			$this->button_bulk_action = true;
 			$this->button_action_style = "button_icon";
 			$this->button_add = false;
 			$this->button_edit = false;
@@ -24,22 +26,19 @@
 			$this->button_show = false;
 			$this->button_filter = true;
 			$this->button_import = false;
-			$this->button_export = true;
-			$this->table = "certificates_details";
+			$this->button_export = false;
+			$this->table = "percentage_marketings";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Group ID","name"=>"certificates_id","callback"=>function($row) {
-				return DB::table('certificates')->where('id',$row->certificates_id)->value('groups_id');
-			}];
-			$this->col[] = ["label"=>"Group Name","name"=>"certificates_id","callback"=>function($row) {
-				$groups_id = DB::table('certificates')->where('id',$row->certificates_id)->value('groups_id');
-				return DB::table('groups')->where('id',$groups_id)->value('name');
-			}];
+			$this->col[] = ["label"=>"ID","name"=>"id"];
 			$this->col[] = ["label"=>"Trainee","name"=>"trainees_id","join"=>"cms_users,name"];
-			$this->col[] = ["label"=>"Phone","name"=>"trainees_id","join"=>"cms_users,phone_number"];
-			$this->col[] = ["label"=>"updated_at","name"=>"updated_at"];
+			$this->col[] = ["label"=>"Marketer","name"=>"marketers_id","join"=>"cms_users,name"];
+			$this->col[] = ["label"=>"Marketing Value","name"=>"marketing_value"];
+			$this->col[] = ["label"=>"Paid","name"=>"Paid"];
+			$this->col[] = ["label"=>"Remaining","name"=>"remaining"];
+			$this->col[] = ["label"=>"Created At","name"=>"created_at"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -49,14 +48,11 @@
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ["label"=>"Groups Id","name"=>"groups_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"groups,name"];
 			//$this->form[] = ["label"=>"Trainees Id","name"=>"trainees_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"trainees,id"];
-			//$this->form[] = ["label"=>"Fees","name"=>"fees","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"Fees Paid","name"=>"fees_paid","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"Fees Remaining","name"=>"fees_remaining","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"Disscount Value","name"=>"disscount_value","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"Status","name"=>"status","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Certificate Status","name"=>"certificate_status","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Marketers Id","name"=>"marketers_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"marketers,id"];
+			//$this->form[] = ["label"=>"Marketing Value","name"=>"marketing_value","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Paid","name"=>"Paid","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Remaining","name"=>"remaining","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
 			# OLD END FORM
 
 			/*
@@ -86,7 +82,10 @@
 	        |
 	        */
 	        $this->addaction = array();
-			$this->addaction[] = ['label'=>'Print','icon'=>'fa fa-print','color'=>'info', 'confirmation' => true ,'url'=>CRUDBooster::adminPath("certificate_waiting/print").'/[id]'];
+          $this->addaction[] = ['label'=>'Details','icon'=>'fa fa-arrows-alt','color'=>'primary','url'=>CRUDBooster::mainpath('getPay').'/[id]','showIf'=>"[marketing_value] > 0"];
+          // $this->addaction[] = ['label'=>'Details','icon'=>'fa fa-arrows-alt','color'=>'primary','url'=>CRUDBooster::mainpath('getPay').'/[id]','showIf'=>"CRUDBooster::myPrivilegeId() == 2 && [marketing_value] <> 0"];
+          // $this->addaction[] = ['label'=>'Details','icon'=>'fa fa-arrows-alt','color'=>'primary','url'=>CRUDBooster::mainpath('getPay').'/[id]','showIf'=>"CRUDBooster::myPrivilegeId() == 4 && [marketing_value] <> 0"];
+
 
 	        /*
 	        | ----------------------------------------------------------------------
@@ -243,9 +242,8 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
-	        // 'none','requested','waiting','ready','received'
-		  $query->where('certificates_details.certificate_status','ready')->orderBy('updated_at', 'desc');
-		//   $query->orderBy('updated_at', 'desc');
+	        //Your code here
+
 	    }
 
 	    /*
@@ -331,125 +329,68 @@
 
 	    }
 
-      public function received($groups_trainees_id) {
-        //Your code here
+      public function getPay($id) {
 
-        DB::table('groups_trainees')->where('id',$groups_trainees_id)->update(['certificate_status' => 'received']);
+        $this->cbLoader();
+        $module = CRUDBooster::getCurrentModule();
+        $row = DB::table($this->table)->where($this->primary_key, $id)->first();
+        if (! CRUDBooster::isUpdate()) {
+            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+        }
 
-		CRUDBooster::redirectBack('success');
+				$data['row'] = DB::table('percentage_marketings')
+				->where('id',$id)
+				->first();
+        $data['id'] = $id;
+        $this->button_addmore = FALSE;
+        $this->button_cancel  = TRUE;
+        $this->button_show    = FALSE;
+        $this->button_add     = FALSE;
+        $this->button_delete  = FALSE;
+
+				$this->cbView('account.marketing_payments',$data);
+	    }
+
+      public function pay(Request $request) {
+
+        $this->cbLoader();
+        $module = CRUDBooster::getCurrentModule();
+        $row = DB::table($this->table)->where($this->primary_key, $request->percentage_marketings_id)->first();
+        if (! CRUDBooster::isUpdate()) {
+            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+        }
+
+        $result = NoraCenter::payFeesMarketer($request->percentage_marketings_id, $request->pay);
+
+        if (!$result) {
+          CRUDBooster::redirect(CRUDBooster::adminPath('marketing_payments/getPay/'.$request->percentage_marketings_id),'Wrong Bay','warning');
+        }
+
+        $percentage_marketing = CRUDBooster::first('percentage_marketings',['id'=>$request->percentage_marketings_id]);
+        $group = CRUDBooster::first('groups',['id'=>$percentage_marketing->groups_id]);
+        $trainee_name = DB::table('cms_users')->where('id',$percentage_marketing->trainees_id)->value('name');
+        // $group = DB::table('groups')->where('id',$request->groups_id)->first();
+        // $trainer_name = DB::table('cms_users')->where('id',$group->trainers_id)->value('name');
+
+        // Notification
+        if ($request->pay != 0) {
+          $postdata = [];
+          $postdata['id_cms_users'] = $percentage_marketing->marketers_id;
+          $postdata['trainee_name'] = $trainee_name;
+          $postdata['groups_name'] = $group->name;
+          $postdata['amount'] = $request->pay;
+          Notification::payFeesMarketer($postdata);
+        }
+
+        // add log user amount trainee_name groups_name
+        CRUDBooster::insertLog(trans("notification.logPayFeesMarketer", ['trainee_name'=>$trainee_name,'groups_name'=>$group->name,'amount' => $request->pay]));
+
+        CRUDBooster::redirect(CRUDBooster::adminPath('marketing_payments'),'Good work, Payment marketer  successfully','success');
       }
 
+	    //By the way, you can still create your own method in here... :)
 
-	  public function certificatesPrint($groups_id, $trainees_id){
-		$this->cbLoader();
-        $module = CRUDBooster::getCurrentModule();
-        $row = DB::table($this->table)->where($this->primary_key, $request->groups_id)->first();
-        if (! CRUDBooster::isUpdate()) {
-            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
-		}
-
-		$trainee = DB::table('cms_users')
-                 ->where('id',$trainees_id)
-				 ->first();
-
-		$group = DB::table('groups')
-			->where('id',$groups_id)
-			->first(); #classroom_lectures_id
-
-		$course = DB::table('courses')
-                          ->where('id',$group->courses_id)
-						  ->first();
-
-		$group_start    = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$groups_id)
-                          ->min('date');
-
-        $group_end      = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$groups_id)
-						  ->max('date');
-
-		$certificate_id = DB::table('certificates')
-                          ->where('groups_id',$groups_id)
-						  ->value('id');
-
-		$certificates_details = DB::table('certificates_details')
-						  ->where('certificates_id',$certificate_id)
-						  ->where('trainees_id',$trainees_id)
-						  ->first();
-
-		$data['trainee_photo'] = $trainee->photo;
-        $data['trainee_id']    = $trainee->id;
-		$data['trainee_name']  = $trainee->name_english;
-
-		$data['groups_id']  = $groups_id;
-
-		$data['course_name']   = $course->name;
-
-		$data['verify']   = $certificates_details->verify;
-
-        $data['group_start']   = $group_start;
-		$data['group_end']     = $group_end;
-
-		$data['degree']         = $certificates_details->degree;
-
-		return view('result.print',$data);
-
-	  }
-
-	  public function certificatesDetailsPrint($certificates_details_id) {
-		$this->cbLoader();
-        $module = CRUDBooster::getCurrentModule();
-        $row = DB::table($this->table)->where($this->primary_key, $request->groups_id)->first();
-        if (! CRUDBooster::isUpdate()) {
-            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
-		}
-
-		$certificates_details = DB::table('certificates_details')
-						  ->where('id',$certificates_details_id)
-						  ->first();
-
-		$trainee = DB::table('cms_users')
-                 ->where('id',$certificates_details->trainees_id)
-				 ->first();
-
-		$certificate = DB::table('certificates')
-                          ->where('id',$certificates_details->certificates_id)
-						  ->first();
-
-		$group = DB::table('groups')
-			->where('id',$certificate->groups_id)
-			->first(); #classroom_lectures_id
-
-		$course = DB::table('courses')
-                          ->where('id',$group->courses_id)
-						  ->first();
-
-		$group_start    = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$group->id)
-                          ->min('date');
-
-        $group_end      = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$group->id)
-						  ->max('date');
-
-		$data['trainee_photo'] = $trainee->photo;
-        $data['trainee_id']    = $trainee->id;
-		$data['trainee_name']  = $trainee->name_english;
-
-		$data['groups_id']  = $group->id;
-
-		$data['course_name']   = $course->name;
-
-		$data['verify']   = $certificates_details->verify;
-
-        $data['group_start']   = $group_start;
-		$data['group_end']     = $group_end;
-
-		$data['degree']         = $certificates_details->degree;
-
-		return view('result.print',$data);
-	  }
 
 	}

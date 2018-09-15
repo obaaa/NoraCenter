@@ -36,6 +36,7 @@ Route::post('/admin/convert_groups_trainees/', 'AdminNewGroupsController@Convert
 Route::get('/admin/receipt/register_fees/{groups_id}/{trainees_id}/', 'Receipt@registerFees');
 Route::get('/admin/receipt/groups_fees/{groups_id}/{trainees_id}/', 'Receipt@groupFees');
 Route::get('/admin/receipt/certificate_fees/{groups_id}/{trainees_id}/', 'Receipt@certificateFees');
+Route::get('/admin/receipt/trainers/{groups_id}/', 'Receipt@traineersGroupFees');
 
 // مسارات حضور المجموعات
 Route::get('admin/attendances/taking_attendance/{attendances_id}/{lectures_id}','AdminAttendancesController@taking_attendance');
@@ -64,11 +65,27 @@ Route::get('/admin/certificate_waiting/print/{certificates_details_id}/', 'Admin
 // التحقق من صحة الشهادة
 Route::get('/verify/{verify}','Verify');
 
-
+//
 Route::get('admin/get_messages','AdminMessagesController@getMessages');
 Route::post('admin/messages/save','AdminMessagesController@saveMessages');
 
-// المسار الجزر
-Route::get('/', function () {
-    return view('welcome');
-});
+//
+Route::get('admin/trainers_payments/getPay/{id}','AdminTrainersPaymentsController@getPay');
+
+//
+Route::post('admin/trainers_payments/pay','AdminTrainersPaymentsController@pay');
+
+//
+Route::get('admin/marketing_payments/getPay/{id}','AdminMarketingPaymentsController@getPay');
+
+//
+Route::post('admin/marketing_payments/pay','AdminMarketingPaymentsController@pay');
+
+
+// مسارات موقع الويب 
+Route::get('/','Website@index');
+Route::get('/about','Website@about');
+Route::get('/to_connect','Website@to_connect');
+Route::get('/trainers','Website@trainers');
+Route::get('/events','Website@events');
+Route::get('/specialties/{specialtie}','Website@getSpecialtie');

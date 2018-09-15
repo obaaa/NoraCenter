@@ -22,6 +22,7 @@
         "vuepress": "^0.14.2"
     },
     "dependencies": {
-        "@ionic-native/user-agent": "^4.10.0"
+        "@ionic-native/user-agent": "^4.10.0",
+        "bulma-extensions": "^3.0.0"
     }
 }

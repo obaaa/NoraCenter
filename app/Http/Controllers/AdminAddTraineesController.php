@@ -2,61 +2,77 @@
 
 	use Session;
 	use Request;
-	use Ramsey\Uuid\Uuid;
 	use DB;
 	use CRUDBooster;
 
-	class AdminAllCertificatesController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminAddTraineesController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
-			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "id";
-			$this->limit = "20";
-			$this->orderby = "id,desc";
-			$this->global_privilege = true;
-			$this->button_table_action = true;
-			$this->button_action_style = "button_icon";
-			$this->button_add = false;
-			$this->button_edit = false;
-			$this->button_delete = false;
-			$this->button_detail = false;
-			$this->button_show = false;
-			$this->button_filter = true;
-			$this->button_import = false;
-			$this->button_export = true;
-			$this->table = "certificates_details";
-			# END CONFIGURATION DO NOT REMOVE THIS LINE
+  			# START CONFIGURATION DO NOT REMOVE THIS LINE
+  			$this->title_field = "name";
+  			$this->limit = "20";
+  			$this->orderby = "id,desc";
+  			$this->global_privilege = true;
+  			$this->button_table_action = true;
+  			$this->button_bulk_action = false;
+  			$this->button_action_style = "button_icon";
+  			$this->button_add = true;
+  			$this->button_edit = true;
+  			$this->button_delete = true;
+  			$this->button_detail = true;
+  			$this->button_show = false;
+  			$this->button_filter = true;
+  			$this->button_import = false;
+  			$this->button_export = false;
+  			$this->table = "cms_users";
+  			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
-			# START COLUMNS DO NOT REMOVE THIS LINE
-			$this->col = [];
-			$this->col[] = ["label"=>"Group ID","name"=>"certificates_id","callback"=>function($row) {
-				return DB::table('certificates')->where('id',$row->certificates_id)->value('groups_id');
-			}];
-			$this->col[] = ["label"=>"Group Name","name"=>"certificates_id","callback"=>function($row) {
-				$groups_id = DB::table('certificates')->where('id',$row->certificates_id)->value('groups_id');
-				return DB::table('groups')->where('id',$groups_id)->value('name');
-			}];
-			$this->col[] = ["label"=>"Trainee","name"=>"trainees_id","join"=>"cms_users,name"];
-			$this->col[] = ["label"=>"Phone","name"=>"trainees_id","join"=>"cms_users,phone_number"];
-			$this->col[] = ["label"=>"updated_at","name"=>"updated_at"];
-			# END COLUMNS DO NOT REMOVE THIS LINE
+        		$trainee_url = url(config('crudbooster.ADMIN_PATH')).'/trainee';
 
-			# START FORM DO NOT REMOVE THIS LINE
-			$this->form = [];
+        		# START COLUMNS DO NOT REMOVE THIS LINE
+  			$this->col = [];
+  			$this->col[] = ["label"=>"ID-NO","name"=>"id"];
+  			$this->col[] = ["label" => "Name", "name" => "name", "callback_php" => '"<a href=\"'.$trainee_url.'/detail/$row->id\">$row->name</a>"'];
+  			// $this->col[] = ["label"=>"Name","name"=>"name"];
+  			$this->col[] = ["label"=>"Photo","name"=>"photo","image"=>true];
+  			$this->col[] = ["label"=>"Email","name"=>"email"];
+  			$this->col[] = ["label"=>"Phone Number","name"=>"phone_number"];
+  			$this->col[] = ["label"=>"Educational Level","name"=>"educational_level"];
+  			$this->col[] = ["label"=>"Address","name"=>"address"];
+  			# END COLUMNS DO NOT REMOVE THIS LINE
 
-			# END FORM DO NOT REMOVE THIS LINE
+
+  			# START FORM DO NOT REMOVE THIS LINE
+  			$this->form = [];
+  			$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
+  			$this->form[] = ['label'=>'Photo','name'=>'photo','type'=>'upload','validation'=>'image|max:6000','width'=>'col-sm-10','help'=>'File types support : JPG, JPEG, PNG, GIF, BMP'];
+  			$this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|email|unique:cms_users','width'=>'col-sm-10','placeholder'=>'Please enter a valid email address'];
+  			$this->form[] = ['label'=>'Phone Number','name'=>'phone_number','type'=>'number','validation'=>'required|unique:cms_users|numeric|min:10','width'=>'col-sm-8','help'=>'09×××××××× / 01×××××××× | رقم الهاتف'];
+  			$this->form[] = ['label'=>'Gender','name'=>'gender','type'=>'select','validation'=>'required','width'=>'col-sm-9','dataenum'=>'ذكر;أنثى'];
+  			$this->form[] = ['label'=>'Specialization','name'=>'specialization','type'=>'text','validation'=>'required','width'=>'col-sm-9','help'=>'التخصص'];
+  			$this->form[] = ['label'=>'Educational Level','name'=>'educational_level','type'=>'select','validation'=>'required','width'=>'col-sm-9','dataenum'=>'أمي;أساسي;ثانوي;جامعي;فوق الجامعي','help'=>'المستوى التعليمي'];
+  			$this->form[] = ['label'=>'Address','name'=>'address','type'=>'text','validation'=>'required|string','width'=>'col-sm-9','help'=>'العنوان'];
+  			$this->form[] = ['label'=>'Password','name'=>'password','type'=>'password','validation'=>'min:3|max:32','width'=>'col-sm-9'];
+  			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ["label"=>"Groups Id","name"=>"groups_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"groups,name"];
-			//$this->form[] = ["label"=>"Trainees Id","name"=>"trainees_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"trainees,id"];
-			//$this->form[] = ["label"=>"Fees","name"=>"fees","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"Fees Paid","name"=>"fees_paid","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"Fees Remaining","name"=>"fees_remaining","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"Disscount Value","name"=>"disscount_value","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Name","name"=>"name","type"=>"text","required"=>TRUE,"validation"=>"required|string|min:3|max:70","placeholder"=>"فضلا ادخل احرف فقط"];
+			//$this->form[] = ["label"=>"Name English","name"=>"name_english","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Photo","name"=>"photo","type"=>"upload","required"=>TRUE,"validation"=>"required|image|max:3000","help"=>"الملفات المدعومة : JPG, JPEG, PNG, GIF, BMP"];
+			//$this->form[] = ["label"=>"Email","name"=>"email","type"=>"email","required"=>TRUE,"validation"=>"required|min:1|max:255|email|unique:cms_users","placeholder"=>"صيغة البريد الإلكتروني غير صحيحة"];
+			//$this->form[] = ["label"=>"Password","name"=>"password","type"=>"password","required"=>TRUE,"validation"=>"min:3|max:32","help"=>"٥ احرف فما فوق ، اترك الحقل فارغا اذا لا تريد تغيير كلمة المرور"];
+			//$this->form[] = ["label"=>"Cms Privileges","name"=>"id_cms_privileges","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"cms_privileges,name"];
 			//$this->form[] = ["label"=>"Status","name"=>"status","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Certificate Status","name"=>"certificate_status","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Phone Number","name"=>"phone_number","type"=>"number","required"=>TRUE,"validation"=>"required|numeric","placeholder"=>"ادخل ارقام فقط"];
+			//$this->form[] = ["label"=>"Gender","name"=>"gender","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Age","name"=>"age","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Specialization","name"=>"specialization","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Educational Level","name"=>"educational_level","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Address","name"=>"address","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Details","name"=>"details","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
+			//$this->form[] = ["label"=>"Money","name"=>"money","type"=>"money","required"=>TRUE,"validation"=>"required|integer|min:0"];
 			# OLD END FORM
 
 			/*
@@ -86,7 +102,7 @@
 	        |
 	        */
 	        $this->addaction = array();
-			$this->addaction[] = ['label'=>'Print','icon'=>'fa fa-print','color'=>'info', 'confirmation' => true ,'url'=>CRUDBooster::adminPath("certificate_waiting/print").'/[id]'];
+
 
 	        /*
 	        | ----------------------------------------------------------------------
@@ -243,9 +259,8 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
-	        // 'none','requested','waiting','ready','received'
-		  $query->where('certificates_details.certificate_status','ready')->orderBy('updated_at', 'desc');
-		//   $query->orderBy('updated_at', 'desc');
+	        //Your code here
+
 	    }
 
 	    /*
@@ -267,7 +282,8 @@
 	    */
 	    public function hook_before_add(&$postdata) {
 	        //Your code here
-
+          $postdata['created_by'] = CRUDBooster::myId();
+          $postdata['id_cms_privileges'] = 7;
 	    }
 
 	    /*
@@ -279,7 +295,16 @@
 	    */
 	    public function hook_after_add($id) {
 	        //Your code here
-
+          DB::table('percentage_marketings')->insert([
+            'trainees_id'     =>  $id,
+            'marketers_id'    =>  CRUDBooster::myId(),
+            'marketing_value' => 0,
+            // 'Paid'            =>
+            // 'remaining'       =>
+            'created_at'      =>  now(),
+            // 'updated_at'      =>
+          ]);
+          CRUDBooster::redirect(CRUDBooster::adminPath(), 'good', 'success');
 	    }
 
 	    /*
@@ -331,125 +356,9 @@
 
 	    }
 
-      public function received($groups_trainees_id) {
-        //Your code here
-
-        DB::table('groups_trainees')->where('id',$groups_trainees_id)->update(['certificate_status' => 'received']);
-
-		CRUDBooster::redirectBack('success');
-      }
 
 
-	  public function certificatesPrint($groups_id, $trainees_id){
-		$this->cbLoader();
-        $module = CRUDBooster::getCurrentModule();
-        $row = DB::table($this->table)->where($this->primary_key, $request->groups_id)->first();
-        if (! CRUDBooster::isUpdate()) {
-            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
-		}
+	    //By the way, you can still create your own method in here... :)
 
-		$trainee = DB::table('cms_users')
-                 ->where('id',$trainees_id)
-				 ->first();
-
-		$group = DB::table('groups')
-			->where('id',$groups_id)
-			->first(); #classroom_lectures_id
-
-		$course = DB::table('courses')
-                          ->where('id',$group->courses_id)
-						  ->first();
-
-		$group_start    = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$groups_id)
-                          ->min('date');
-
-        $group_end      = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$groups_id)
-						  ->max('date');
-
-		$certificate_id = DB::table('certificates')
-                          ->where('groups_id',$groups_id)
-						  ->value('id');
-
-		$certificates_details = DB::table('certificates_details')
-						  ->where('certificates_id',$certificate_id)
-						  ->where('trainees_id',$trainees_id)
-						  ->first();
-
-		$data['trainee_photo'] = $trainee->photo;
-        $data['trainee_id']    = $trainee->id;
-		$data['trainee_name']  = $trainee->name_english;
-
-		$data['groups_id']  = $groups_id;
-
-		$data['course_name']   = $course->name;
-
-		$data['verify']   = $certificates_details->verify;
-
-        $data['group_start']   = $group_start;
-		$data['group_end']     = $group_end;
-
-		$data['degree']         = $certificates_details->degree;
-
-		return view('result.print',$data);
-
-	  }
-
-	  public function certificatesDetailsPrint($certificates_details_id) {
-		$this->cbLoader();
-        $module = CRUDBooster::getCurrentModule();
-        $row = DB::table($this->table)->where($this->primary_key, $request->groups_id)->first();
-        if (! CRUDBooster::isUpdate()) {
-            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => $row->{$this->title_field},'module' => $module->name]));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
-		}
-
-		$certificates_details = DB::table('certificates_details')
-						  ->where('id',$certificates_details_id)
-						  ->first();
-
-		$trainee = DB::table('cms_users')
-                 ->where('id',$certificates_details->trainees_id)
-				 ->first();
-
-		$certificate = DB::table('certificates')
-                          ->where('id',$certificates_details->certificates_id)
-						  ->first();
-
-		$group = DB::table('groups')
-			->where('id',$certificate->groups_id)
-			->first(); #classroom_lectures_id
-
-		$course = DB::table('courses')
-                          ->where('id',$group->courses_id)
-						  ->first();
-
-		$group_start    = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$group->id)
-                          ->min('date');
-
-        $group_end      = DB::table('classroom_lectures_reserveds')
-                          ->where('groups_id',$group->id)
-						  ->max('date');
-
-		$data['trainee_photo'] = $trainee->photo;
-        $data['trainee_id']    = $trainee->id;
-		$data['trainee_name']  = $trainee->name_english;
-
-		$data['groups_id']  = $group->id;
-
-		$data['course_name']   = $course->name;
-
-		$data['verify']   = $certificates_details->verify;
-
-        $data['group_start']   = $group_start;
-		$data['group_end']     = $group_end;
-
-		$data['degree']         = $certificates_details->degree;
-
-		return view('result.print',$data);
-	  }
 
 	}
