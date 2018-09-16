@@ -33,8 +33,39 @@ class Website extends Controller {
   //
   public function events()
   {
-    return view('website.events');
+    // $data['page_title'] = 'Home - Blog';
+  	// $data['page_description'] = 'This is my simple blog';
+  	// $data['blog_name'] = $this->blog_name;
+  	// $data['categories'] = DB::table('categories')->get();
+
+  	$data['result'] = DB::table('posts')
+  	// ->join('categories','categories.id','=','categories_id')
+  	// ->join('cms_users','cms_users.id','=','cms_users_id')
+  	// ->select('posts.*','categories.name as name_categories','cms_users.name as name_author')
+  	->orderby('posts.id','desc')
+    ->paginate(9);
+  	// ->take(5)
+  	// ->get();
+    // dd($data);
+  	return view('website.events',$data);
   }
+  //
+  public function getEvent($event) {
+
+    	$row = DB::table('posts')
+    	// ->join('categories','categories.id','=','categories_id')
+    	// ->join('cms_users','cms_users.id','=','cms_users_id')
+    	// ->select('posts.*','categories.name as name_categories','cms_users.name as name_author')
+    	->where('posts.slug',$event)
+    	->first();
+    	$data['row'] = $row;
+    	$data['page_title'] = $row->title.' | MySimpleBlog';
+    	$data['page_description'] = str_limit(strip_tags($row->content),155);
+    	// $data['blog_name'] = $this->blog_name;
+    	// $data['categories'] = DB::table('categories')->get();
+
+    	return view('website.events_view',$data);
+    }
   //
 	public static function getSpecialtie($specialtie) {
     $data = [];
