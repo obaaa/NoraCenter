@@ -65,4 +65,15 @@
       <!-- End Staff -->
     </div>
   </section>
+
+<div class="columns">
+  <div class="column"></div>
+  <div class="column is-one-third">
+    <div class="notification">
+      {!! $trainers->links() !!}
+    </div>
+  </div>
+  <div class="column"></div>
+</div>
+
 @endsection

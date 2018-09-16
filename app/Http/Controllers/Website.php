@@ -27,7 +27,10 @@ class Website extends Controller {
   //
   public function trainers()
   {
-    $data['trainers'] = DB::table('cms_users')->where('cms_users.id_cms_privileges',6)->get();
+    $data['trainers'] = DB::table('cms_users')
+                          ->where('cms_users.id_cms_privileges',6)
+                          ->orderby('cms_users.id','desc')
+                          ->paginate(12);
     return view('website.trainers',$data);
   }
   //
