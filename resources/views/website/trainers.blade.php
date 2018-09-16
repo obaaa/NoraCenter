@@ -41,7 +41,9 @@
                         @if ($value->photo)
                           <img src="{{ asset($value->photo) }}" alt="Image">
                         @else
-                          <img src="{{ asset('vendor/crudbooster/avatar.jpg') }}" alt="Image">
+                          <img src="{{ Avatar::create($value->name)->toBase64() }}" />
+                          {{-- <img src="https://dummyimage.com/96/00d1b2/fff&text={{ $Char }}" alt="Image"> --}}
+                          {{-- <img src="{{ asset('vendor/crudbooster/avatar.jpg') }}" alt="Image"> --}}
                         @endif
                     </figure>
                   </div>
