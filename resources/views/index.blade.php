@@ -1,16 +1,28 @@
-@extends('layouts.web')
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  @include('layouts.asset')
+  <style media="screen">
+    line-height: 0;
+  </style>
+  <style>
+      .position-ref2 {
+          position: relative;
+      }
+      #particles-js {
+          position: absolute;
+          /* top: 0; */
+          /* left: 0; */
+          width: 100%;
+          height: 40%;
+      }
+  </style>
+</head>
+<body>
 
-@section('title', 'الرئيسية')
-<style media="screen">
-  line-height: 0;
-</style>
-{{-- @section('sidebar')
-    @parent
+  @include('layouts.header')
 
-    <p>This is appended to the master sidebar.</p>
-@endsection --}}
-
-@section('content')
+  <div id="particles-js"></div>
 
   <section class="hero is-mediam is-primary is-bold">
     <div class="hero-body">
@@ -22,17 +34,10 @@
         <h2 class="subtitle">
           {{ CRUDBooster::getSetting('details') }}
         </h2>
-        {{--<a class="button" target="_blank" href="{{ url('admin') }}">
-          <span class="icon">
-            <i class="fas fa-external-link-alt"></i>
-          </span>
-          <span>
-            {{ trans("website.system") }}
-          </span>
-        </a> --}}
       </div>
     </div>
   </section>
+
   <div class="box cta">
     <p class="has-text-centered">
       أهلا بكم في <strong>{{CRUDBooster::getSetting('appname')  }}</strong> إنضم إلينا اﻷن، قم بالتسجيل من هنا
@@ -43,7 +48,6 @@
       </a>
     </p>
   </div>
-  <br>
 
   <section>
     <div class="container">
@@ -79,9 +83,20 @@
       </nav>
     </div>
   </section>
-{{-- <script type="text/javascript">
-  $( document ).ready(function() {
-    var carousels = bulmaCarousel.attach(); // carousels now contains an array of all Carousel instances
-  });
-</script> --}}
-@endsection
+
+  <br>
+
+  <script src="{{ asset('js/particles.min.js') }}"></script>
+
+  <script>
+    /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
+    particlesJS.load('particles-js', 'js/particlesjs-config.json', function() {
+       console.log('callback - particles.js config loaded');
+    });
+  </script>
+
+  @include('layouts.footer')
+
+  <script  src="{{ asset("website/js/index.js") }}"></script>
+
+</html>
