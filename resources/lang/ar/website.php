@@ -28,6 +28,7 @@ return [
     'branches' => 'الفروع',
     'courses' => 'الكورسات',
     'trainees' => 'المتدربين',
+    'events' => 'اﻷحداث',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
