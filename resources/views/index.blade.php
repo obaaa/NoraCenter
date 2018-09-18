@@ -41,7 +41,7 @@
   <div class="box cta">
     <p class="has-text-centered">
       أهلا بكم في <strong>{{CRUDBooster::getSetting('appname')  }}</strong> إنضم إلينا اﻷن، قم بالتسجيل من هنا
-      <a class="button" target="_blank" href="{{ url('admin') }}">
+      <a class="button is-primary has-text-weight-bold" target="_blank" href="{{ url('admin') }}">
         <span>
           {{ trans("website.system") }}
         </span>
