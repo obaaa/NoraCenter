@@ -1,5 +1,5 @@
   <meta charset="UTF-8">
-  <title>{{ CRUDBooster::getSetting('appname') }} - @yield('title')</title>
+  <title>{{ CRUDBooster::getSetting('appname') }}  @yield('title')</title>
   <meta name="csrf-token" content="{{ csrf_token() }}"/>
   <meta name='generator' content='NoraCenter'/>
   <link rel="shortcut icon" href="{{ CRUDBooster::getSetting('favicon')?asset(CRUDBooster::getSetting('favicon')):asset('vendor/crudbooster/assets/logo_crudbooster.png') }}">
