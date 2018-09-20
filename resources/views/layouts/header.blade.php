@@ -38,7 +38,7 @@
         </a>
         <div class="navbar-dropdown is-boxed">
           @foreach (DB::table('specialties')->get() as $value)
-            <a class="navbar-item" href="{{ 'specialties/'.$value->name }}">
+            <a class="navbar-item" href="{{ url('specialties/'.$value->name) }}">
               {{ $value->name }}
             </a>
           @endforeach
