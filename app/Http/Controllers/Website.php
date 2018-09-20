@@ -73,8 +73,12 @@ class Website extends Controller {
 	public static function getSpecialtie($specialtie) {
     $data = [];
     $data['specialtie'] = DB::table('specialties')->where('name',$specialtie)->first();
-    $data['courses'] = DB::table('courses')->where('specialties_id',$data['specialtie']->id)->get();
-    dd($data);
+    $data['courses'] = DB::table('courses')
+    ->where('specialties_id',$data['specialtie']->id)
+    ->orderby('courses.id','desc')
+    ->paginate(12);
+    // dd($data);
+    return view('website.specialtie',$data);
 	}
 
 }
