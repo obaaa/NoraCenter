@@ -30,6 +30,8 @@ return [
     'trainees' => 'المتدربين',
     'events' => 'اﻷحداث',
     'subject' => 'العنوان',
+    'send_message' => 'إرسال رسالة',
+    'read_more' => 'المزيد',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
