@@ -90,3 +90,4 @@ Route::get('/trainers','Website@trainers');
 Route::get('/events','Website@events');
 Route::get('/specialties/{specialtie}','Website@getSpecialtie');
 Route::get('/events/{event}','Website@getEvent');
+Route::post('postConnect','Website@postConnect');
