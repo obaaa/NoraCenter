@@ -46,13 +46,13 @@
                     </figure>
                   </div> --}}
                   <div class="media-content">
-                    <p class="title is-4">{{ $value->name }}</p>
+                    <h2 class="title is-4">{{ $value->name }}</h2>
                     {{-- <p class="subtitle is-6">@johnsmith</p> --}}
                   </div>
                 </div>
 
                 <div class="content">
-                  <p>{{ $value->description }}</p>
+                  <p>{{ str_limit(strip_tags($value->description),80) }}</p>
                   {{-- <a href="#">#css</a> <a href="#">#responsive</a> --}}
                   <hr>
                   <time datetime="2016-1-1">Lecture time: {{ $value->lecture_time }}</time>
