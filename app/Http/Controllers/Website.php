@@ -17,7 +17,8 @@ class Website extends Controller {
   //
   public function about()
   {
-    return view('website.about');
+    $data['branches'] = DB::table('branches')->get();
+    return view('website.about',$data);
   }
   //
   public function to_connect()
@@ -80,5 +81,17 @@ class Website extends Controller {
     // dd($data);
     return view('website.specialtie',$data);
 	}
+
+  public function postConnect(Request $request)
+  {
+    DB::table('contact_forms')->insert([
+      'name' => $request->name,
+      'email' =>  $request->email,
+      'subject' =>  $request->subject,
+      'contact_message' =>  $request->contact_message,
+    ]);
+
+    CRUDBooster::redirect(url('to_connect'),'تم إرسال رسالتك بنجاح','success');
+  }
 
 }
