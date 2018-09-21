@@ -486,6 +486,24 @@
           CRUDBooster::redirect(CRUDBooster::adminPath('new_groups/trainees/'.$groups_id),'Wrong Add','warning');
         }
 
+        // start: percentage marketing
+        $percentage_marketing = DB::table('percentage_marketings')
+                                ->where('trainees_id',$trainees_id)
+                                ->first();
+
+        $trainee = DB::table('cms_users')->where('id',$trainees_id)->first();
+        if (!$percentage_marketing && $trainee->created_by) {
+
+          DB::table('percentage_marketings')->insert([
+            'groups_id' => $groups_id,
+            'trainees_id' =>  $trainees_id,
+            'marketers_id'  =>  $trainee->created_by,
+            'created_at'  =>  now()
+          ]);
+
+        }
+        // end: percentage marketing
+
         // Notification
         $postdata = [];
         $postdata['id_cms_users'] = $trainees_id;
@@ -630,6 +648,19 @@
           CRUDBooster::redirect(CRUDBooster::adminPath('new_groups/trainees/'.$request->groups_id),'Wrong Bay','warning');
         }
 
+        // start: percentage marketing
+        $percentage_marketing = DB::table('percentage_marketings')
+                                ->where('trainees_id',$request->trainees_id)
+                                ->where('groups_id',$request->groups_id)
+                                ->first();
+        if ($percentage_marketing) {
+          DB::table('percentage_marketings')->where('id',$percentage_marketing->id)->update([
+            'marketing_value' => $percentage_marketing->marketing_value + (($request->money * CRUDBooster::getSetting('marketing_value'))/100),
+            'remaining' =>  $percentage_marketing->remaining + (($request->money * CRUDBooster::getSetting('marketing_value'))/100)
+          ]);
+        }
+        // end: percentage marketing
+
         $group = DB::table('groups')->where('id',$request->groups_id)->first();
         $trainee_name = DB::table('cms_users')->where('id',$request->trainees_id)->value('name');
 
@@ -739,6 +770,18 @@
           'fees'           => $to_group->fees,
           'fees_remaining' => $to_group->fees - $current_paid,
         ]);
+
+        // start: percentage marketing
+        $percentage_marketing = DB::table('percentage_marketings')
+                                ->where('trainees_id',$request->trainees_id)
+                                ->where('groups_id',$request->current_group_id)
+                                ->first();
+        if ($percentage_marketing) {
+          DB::table('percentage_marketings')->where('id',$percentage_marketing->id)->update([
+            'groups_id' => $to_group_id,
+          ]);
+        }
+        // end: percentage marketing
 
         NoraCenter::addFeesTrainer($request->current_group_id);
         NoraCenter::addFeesTrainer($to_group_id);
