@@ -32,7 +32,10 @@
           {{ CRUDBooster::getSetting('appname') }}
         </h1>
         <h2 class="subtitle">
-          {{ CRUDBooster::getSetting('details') }}
+          <p>
+            {{ str_limit(strip_tags(CRUDBooster::getSetting('details')),28) }}<br>
+              <a href="{{ url('about') }}"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+          </p>
         </h2>
       </div>
     </div>
