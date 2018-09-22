@@ -24,7 +24,7 @@
 
   <div id="particles-js"></div>
 
-  <section class="hero is-mediam is-primary is-bold">
+  <section class="hero is-mediam is-bold">
     <div class="hero-body">
       <div class="container has-text-centered">
         <img title='{!!(CRUDBooster::getSetting('appname') == 'CRUDBooster')?"<b>CRUD</b>Booster":CRUDBooster::getSetting('appname')!!}' src='{{ CRUDBooster::getSetting("logo")?asset(CRUDBooster::getSetting('logo')):asset('vendor/crudbooster/assets/logo_crudbooster.png') }}' style='max-width: 100%;max-height:170px'/>
@@ -34,7 +34,7 @@
         <h2 class="subtitle">
           <p>
             {{ str_limit(strip_tags(CRUDBooster::getSetting('details')),28) }}<br>
-              <a href="{{ url('about') }}"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+              <a href="{{ url('about') }}" style="color:#46a975;"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
           </p>
         </h2>
       </div>
