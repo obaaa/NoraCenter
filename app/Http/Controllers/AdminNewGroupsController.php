@@ -258,6 +258,9 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
+          if (CRUDBooster::myPrivilegeName() == 'Trainer') {
+           $query->where('groups.trainers_id', CRUDBooster::myId());
+          }
           $query->where('groups.status','open');
 	    }
 
