@@ -1,6 +1,6 @@
 @extends("crudbooster::admin_template")
 @section("content")
-  @if (CRUDBooster::myPrivilegeId() != 7)
+  @if (CRUDBooster::myPrivilegeId() == 1 || CRUDBooster::myPrivilegeId() == 2)
     @if(CRUDBooster::getCurrentMethod() != 'getProfile' && $button_cancel)
       @if(g('return_url'))
       <p><a title='Return' href='{{ g("return_url") }}'><i class='fa fa-chevron-circle-left '></i> &nbsp; {{ trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name]) }}</a></p>
