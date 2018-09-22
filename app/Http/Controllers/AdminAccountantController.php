@@ -45,7 +45,7 @@
 			$this->form[] = ['label'=>'Phone Number','name'=>'phone_number','type'=>'number','validation'=>'required|numeric|unique:cms_users','width'=>'col-sm-8','help'=>'Example: 0123456789 or 0912345678','placeholder'=>'Please enter a valid Phone Number'];
 			$this->form[] = ['label'=>'Gender','name'=>'gender','type'=>'select','validation'=>'required|min:1|max:255','width'=>'col-sm-8','dataenum'=>'Male;Female'];
 			$this->form[] = ['label'=>'Address','name'=>'address','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8','placeholder'=>'Enter your current residence'];
-			$this->form[] = ['label'=>'Branches','name'=>'branches','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','datatable'=>'branches,name','help'=>'Select branches allowed','relationship_table'=>'cms_users_branches'];
+			$this->form[] = ['label'=>'Branches','name'=>'branches','type'=>'select2','validation'=>'min:1|max:255','width'=>'col-sm-8','datatable'=>'branches,name','help'=>'Select branches allowed','relationship_table'=>'cms_users_branches'];
 			$this->form[] = ['label'=>'Details','name'=>'details','type'=>'textarea','validation'=>'string|min:5|max:5000','width'=>'col-sm-8','placeholder'=>'Enter some details'];
 			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'select','width'=>'col-sm-8','dataenum'=>'Active;Inactive','default'=>'Active'];
 			# END FORM DO NOT REMOVE THIS LINE
