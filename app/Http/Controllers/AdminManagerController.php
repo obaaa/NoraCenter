@@ -40,13 +40,13 @@
 			$this->form = [];
 			$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:5|max:90','width'=>'col-sm-8','placeholder'=>'You can only enter the letter only'];
 			$this->form[] = ['label'=>'Photo','name'=>'photo','type'=>'upload','validation'=>'required|image|max:5000','width'=>'col-sm-8','help'=>'File types support : JPG, JPEG, PNG, GIF, BMP - Max size 5 MB'];
-			$this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:cms_users','width'=>'col-sm-8','help'=>'Example: 0123456789@mail.com','placeholder'=>'Please enter a valid email address'];
-			$this->form[] = ['label'=>'Password','name'=>'password','type'=>'password','validation'=>'min:3|max:32','width'=>'col-sm-8','help'=>'Minimum 5 characters. Please leave empty if you did not change the password.','placeholder'=>'Please enter a strong Password'];
 			$this->form[] = ['label'=>'Phone Number','name'=>'phone_number','type'=>'number','validation'=>'required|numeric|unique:cms_users','width'=>'col-sm-8','help'=>'Example: 0123456789 or 0912345678','placeholder'=>'Please enter a valid Phone Number'];
 			$this->form[] = ['label'=>'Gender','name'=>'gender','type'=>'select','validation'=>'required|min:1|max:255','width'=>'col-sm-8','dataenum'=>'Male;Female'];
 			$this->form[] = ['label'=>'Address','name'=>'address','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8','placeholder'=>'Enter your current residence'];
-			$this->form[] = ['label'=>'Branches','name'=>'branches','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','datatable'=>'branches,name','help'=>'Select branches allowed','relationship_table'=>'cms_users_branches'];
+			$this->form[] = ['label'=>'Branches','name'=>'branches','type'=>'select2','validation'=>'min:1|max:255','width'=>'col-sm-8','datatable'=>'branches,name','help'=>'Select branches allowed','relationship_table'=>'cms_users_branches'];
 			$this->form[] = ['label'=>'Details','name'=>'details','type'=>'textarea','validation'=>'string|min:5|max:5000','width'=>'col-sm-8','placeholder'=>'Enter some details'];
+      $this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:cms_users','width'=>'col-sm-8','help'=>'Example: 0123456789@mail.com','placeholder'=>'Please enter a valid email address'];
+      $this->form[] = ['label'=>'Password','name'=>'password','type'=>'password','validation'=>'min:3|max:32','width'=>'col-sm-8','help'=>'Minimum 5 characters. Please leave empty if you did not change the password.','placeholder'=>'Please enter a strong Password'];
 			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'select','width'=>'col-sm-8','dataenum'=>'Active;Inactive','default'=>'Active'];
 			# END FORM DO NOT REMOVE THIS LINE
 
