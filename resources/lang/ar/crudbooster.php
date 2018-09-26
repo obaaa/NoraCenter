@@ -260,4 +260,6 @@ return [
     'register_fees' =>  'رسوم التسجيل',
     'group_fees' =>  'آخر مستلم من رسوم المجموعة',
     'certificate_fees' =>  'رسوم الشهادة',
+    'email' =>  'البريد اﻹلكتروني',
+    'password' =>  'كلمة السر',
 ];

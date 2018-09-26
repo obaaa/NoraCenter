@@ -82,10 +82,12 @@ Route::get('admin/marketing_payments/getPay/{id}','AdminMarketingPaymentsControl
 Route::post('admin/marketing_payments/pay','AdminMarketingPaymentsController@pay');
 
 
-// مسارات موقع الويب 
+// مسارات موقع الويب
 Route::get('/','Website@index');
 Route::get('/about','Website@about');
 Route::get('/to_connect','Website@to_connect');
 Route::get('/trainers','Website@trainers');
 Route::get('/events','Website@events');
 Route::get('/specialties/{specialtie}','Website@getSpecialtie');
+Route::get('/events/{event}','Website@getEvent');
+Route::post('postConnect','Website@postConnect');

@@ -5,18 +5,18 @@
 	use DB;
 	use CRUDBooster;
 
-	class AdminManagerController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminPostsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "name";
+			$this->title_field = "title";
 			$this->limit = "20";
 			$this->orderby = "id,desc";
 			$this->global_privilege = true;
 			$this->button_table_action = true;
 			$this->button_bulk_action = true;
-			$this->button_action_style = "button_icon_text";
+			$this->button_action_style = "button_icon";
 			$this->button_add = true;
 			$this->button_edit = true;
 			$this->button_delete = true;
@@ -25,47 +25,29 @@
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "cms_users";
+			$this->table = "posts";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Name","name"=>"name"];
-			$this->col[] = ["label"=>"Photo","name"=>"photo","image"=>true];
-			$this->col[] = ["label"=>"Email","name"=>"email"];
-			$this->col[] = ["label"=>"Phone Number","name"=>"phone_number"];
+			$this->col[] = ["label"=>"Title","name"=>"title"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:5|max:90','width'=>'col-sm-8','placeholder'=>'You can only enter the letter only'];
-			$this->form[] = ['label'=>'Photo','name'=>'photo','type'=>'upload','validation'=>'required|image|max:5000','width'=>'col-sm-8','help'=>'File types support : JPG, JPEG, PNG, GIF, BMP - Max size 5 MB'];
-			$this->form[] = ['label'=>'Phone Number','name'=>'phone_number','type'=>'number','validation'=>'required|numeric|unique:cms_users','width'=>'col-sm-8','help'=>'Example: 0123456789 or 0912345678','placeholder'=>'Please enter a valid Phone Number'];
-			$this->form[] = ['label'=>'Gender','name'=>'gender','type'=>'select','validation'=>'required|min:1|max:255','width'=>'col-sm-8','dataenum'=>'Male;Female'];
-			$this->form[] = ['label'=>'Address','name'=>'address','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8','placeholder'=>'Enter your current residence'];
-			$this->form[] = ['label'=>'Branches','name'=>'branches','type'=>'select2','validation'=>'min:1|max:255','width'=>'col-sm-8','datatable'=>'branches,name','help'=>'Select branches allowed','relationship_table'=>'cms_users_branches'];
-			$this->form[] = ['label'=>'Details','name'=>'details','type'=>'textarea','validation'=>'string|min:5|max:5000','width'=>'col-sm-8','placeholder'=>'Enter some details'];
-      $this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:cms_users','width'=>'col-sm-8','help'=>'Example: 0123456789@mail.com','placeholder'=>'Please enter a valid email address'];
-      $this->form[] = ['label'=>'Password','name'=>'password','type'=>'password','validation'=>'min:3|max:32','width'=>'col-sm-8','help'=>'Minimum 5 characters. Please leave empty if you did not change the password.','placeholder'=>'Please enter a strong Password'];
-			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'select','width'=>'col-sm-8','dataenum'=>'Active;Inactive','default'=>'Active'];
+			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10','placeholder'=>'فضلا ادخل احرف فقط'];
+			$this->form[] = ['label'=>'Tags','name'=>'tags','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ["label"=>"Name","name"=>"name","type"=>"text","required"=>TRUE,"validation"=>"required|string|min:3|max:70","placeholder"=>"You can only enter the letter only"];
-			//$this->form[] = ["label"=>"Name English","name"=>"name_english","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Photo","name"=>"photo","type"=>"upload","required"=>TRUE,"validation"=>"required|image|max:3000","help"=>"File types support : JPG, JPEG, PNG, GIF, BMP"];
-			//$this->form[] = ["label"=>"Email","name"=>"email","type"=>"email","required"=>TRUE,"validation"=>"required|min:1|max:255|email|unique:cms_users","placeholder"=>"Please enter a valid email address"];
-			//$this->form[] = ["label"=>"Password","name"=>"password","type"=>"password","required"=>TRUE,"validation"=>"min:3|max:32","help"=>"Minimum 5 characters. Please leave empty if you did not change the password."];
-			//$this->form[] = ["label"=>"Cms Privileges","name"=>"id_cms_privileges","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"cms_privileges,name"];
-			//$this->form[] = ["label"=>"Status","name"=>"status","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Phone Number","name"=>"phone_number","type"=>"number","required"=>TRUE,"validation"=>"required|numeric","placeholder"=>"You can only enter the number only"];
-			//$this->form[] = ["label"=>"Gender","name"=>"gender","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Age","name"=>"age","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"Specialization","name"=>"specialization","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Educational Level","name"=>"educational_level","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Address","name"=>"address","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Details","name"=>"details","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
+			//$this->form[] = ["label"=>"Categories Id","name"=>"categories_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"categories,id"];
+			//$this->form[] = ["label"=>"Title","name"=>"title","type"=>"text","required"=>TRUE,"validation"=>"required|string|min:3|max:70","placeholder"=>"فضلا ادخل احرف فقط"];
+			//$this->form[] = ["label"=>"Slug","name"=>"slug","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Content","name"=>"content","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
+			//$this->form[] = ["label"=>"Tags","name"=>"tags","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Cms Users Id","name"=>"cms_users_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"cms_users,name"];
 			# OLD END FORM
 
 			/*
@@ -253,7 +235,7 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-          $query->where('cms_users.id_cms_privileges',2);
+
 	    }
 
 	    /*
@@ -275,7 +257,8 @@
 	    */
 	    public function hook_before_add(&$postdata) {
 	        //Your code here
-          $postdata['id_cms_privileges'] = 2;
+          $postdata['slug'] = str_slug($postdata['title']);
+		    	$postdata['cms_users_id'] = CRUDBooster::myId();
 	    }
 
 	    /*
@@ -300,7 +283,8 @@
 	    */
 	    public function hook_before_edit(&$postdata,$id) {
 	        //Your code here
-
+          $postdata['slug'] = str_slug($postdata['title']);
+		    	$postdata['cms_users_id'] = CRUDBooster::myId();
 	    }
 
 	    /*

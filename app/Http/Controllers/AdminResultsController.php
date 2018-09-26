@@ -330,7 +330,7 @@
 
 
 		//By the way, you can still create your own method in here... :)
-		
+
 		// الداله المخصصة لعرض بيانات النتيجه
 		public function getDetails($id) {
 
@@ -355,9 +355,9 @@
 		// 		]);
 		// 	}
 		// 	CRUDBooster::redirect(CRUDBooster::adminPath('results/details/'.$request->certificates_id),'success','success');
-			
+
 		// }
-		
+
 		// تغيير حالة النتيجة بين إنتهاء ومفتوخة
 		public function status(Request $request) {
 
@@ -382,6 +382,6 @@
 				CRUDBooster::redirect(CRUDBooster::adminPath('degrees'),'success','success');
 
 			}
-			
+
 		}
 	}

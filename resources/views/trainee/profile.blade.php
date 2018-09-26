@@ -72,6 +72,30 @@
                   </div>
                 </div>
             </div>
+
+            {{-- Marketing benefits --}}
+            @php
+              $remainings = DB::table('percentage_marketings')->where('marketers_id',$id)->sum('remaining');
+            @endphp
+            @if ($remainings != 0)
+              <div class="panel panel-success">
+                <div class="panel-heading">
+                  <strong>Marketing</strong> <span id='menu-saved-info' style="display:none" class='pull-right text-success'><i
+                                  class='fa fa-check'></i> Menu Saved !</span>
+                </div>
+                <div class="box-body" id="parent-form-area">
+                  <div class="table-responsive">
+                    <table id="table-detail" class="table table-striped">
+                      <tbody>
+                        <tr>
+                          <td>Marketing benefits</td>
+                          <td>{{ $remainings }}</td>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            @endif
           </div>
 
 
